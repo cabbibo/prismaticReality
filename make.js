@@ -16,6 +16,35 @@
       return makeDataTexture( data );
     }
 
+    function makeNormalizedTexture( size ){
+ 
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+
+      for( var i =0; i < data.length; i += 4 ){
+        if( i != 0 ){
+
+          tv1.set( Math.random() -.5 , Math.random()-.5 , Math.random()-.5);
+          tv1.normalize();
+
+        }else{
+
+          tv1.set( 0 , .9999 , 0.01 );
+          tv1.normalize();
+
+        }
+        data[i+0] =tv1.x;
+        data[i+1] =tv1.y;
+        data[i+2] =tv1.z;
+  
+        
+        data[i +3 ] = 0;
+
+
+      }
+
+      return makeDataTexture( data );
+    }
+
     function makeGridTexture(size){
 
       var data = new Float32Array( SIZE * SIZE  * 4 );
@@ -43,23 +72,24 @@
 
     }
 
-    function makeSingleTexture(size){
+    function makeSingleTexture(size , othersSize ){
 
       var data = new Float32Array( SIZE * SIZE  * 4 );
       
       for( var i = 0; i < data.length; i += 4 ){
 
         if( i == 0 ){
+
           data[ i + 0 ] = 0; 
           data[ i + 1 ] = 0; 
           data[ i + 2 ] = 0; 
+          data[ i + 3 ] = .1;
        
         }else{
-
-
-          data[ i + 0 ] = (Math.random()) * size - size; 
-          data[ i + 1 ] = (Math.random()) * size - size; 
-          data[ i + 2 ] = (Math.random()) * size - size; 
+          data[ i + 0 ] = (Math.random()) * size - size / 2; 
+          data[ i + 1 ] = (Math.random()) * size - size / 2; 
+          data[ i + 2 ] = (Math.random()) * size - size / 2; 
+          data[ i + 3 ] = othersSize;
         }
 
         //console.log( f.x );
@@ -70,6 +100,81 @@
 
 
     }
+
+    function getImageData( image ) {
+
+        var canvas = document.createElement( 'canvas' );
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        var context = canvas.getContext( '2d' );
+        context.drawImage( image, 0, 0 );
+
+        return context.getImageData( 0, 0, image.width, image.height );
+
+    }
+
+    function getPixel( imagedata, x, y ) {
+
+        var position = ( x + imagedata.width * y ) * 4, data = imagedata.data;
+        return { r: data[ position ], g: data[ position + 1 ], b: data[ position + 2 ], a: data[ position + 3 ] };
+
+    }
+
+    function makeImageTexture( sizeofObj , texture ){
+
+      var imagedata = getImageData( texture.image );
+
+      var width = texture.image.width;
+      var height = texture.image.height;
+
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+      
+      for( var i = 0; i < data.length; i += 4 ){
+
+        var pixelPosition = tryForPixel(imagedata, width, height , 0);
+
+        data[ i + 0 ] = pixelPosition.x * sizeofObj; 
+        data[ i + 1 ] = pixelPosition.y * sizeofObj; 
+        data[ i + 2 ] = 0; 
+
+        data[ i + 3 ] = pixelPosition.l * .00001 * sizeofObj;
+
+
+      }
+
+      return makeDataTexture( data );
+
+
+      var color = getPixel( imagedata , 10 , 10 );
+    }
+
+    function tryForPixel( imagedata, width, height , timesTried ){
+
+      var x = Math.random();
+      var y = Math.random();
+      var w = Math.floor( width * x);
+      var h = Math.floor( height * y);
+      var color = getPixel( imagedata , w , h );
+      var l = color.r + color.g + color.b;
+
+      if( l > 10 ){ 
+        return { x:x-.5 , y:.5-y , l:l }
+      }else{
+
+        if( timesTried < 10 ){
+          //console.log( timesTried );
+          return tryForPixel( imagedata, width, height, timesTried + 1);
+        }else{
+          return { x:x-.5 , y:.5-y , l:l }
+        }
+      }
+
+    }
+
+
+
+
     function makeMeshTexture( geometry ){
   
       var data = new Float32Array( SIZE * SIZE  * 4 );
@@ -126,13 +231,6 @@
       fVec.add( tv2 );
 
       return fVec;
-    }
-
-    function makeImageTexture( data , size ){
-
-      tryGettingBrighter
-
-
     }
 
 

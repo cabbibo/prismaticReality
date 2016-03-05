@@ -30,7 +30,7 @@ void main(){
   vec4 pos = texture2D( t_pos , position.xy );
   vec4 quat = texture2D( t_rot , position.xy );
 
-  if( pos.a > 0.01 ){
+  if( pos.a > 0.0001 ){
 
   mat4 rot = rotationMatrix( quat.xyz , quat.w );
 

@@ -25,11 +25,12 @@
 
     var s6 = Math.sqrt( 6 );
     var s3 = Math.sqrt( 3 );
+    var t3 = ( 1/3 );
 
-    var v1 = new THREE.Vector3( 0 , (1/3)*s6 , 0 );
-    var v2 = new THREE.Vector3( 0 , (1/3)*s6 , 0 );
-    var v3 = new THREE.Vector3( 0 , (1/3)*s6 , 0 );
-    var v4 = new THREE.Vector3( 0 , (1/3)*s6 , 0 );
+    var v1 = new THREE.Vector3( 0 , (1/6) *s6 , 0 );
+    var v2 = new THREE.Vector3( (1/3) * s3, -(1/6) *s6 , 0 );
+    var v3 = new THREE.Vector3( -(1/6) * s3 ,-(1/6) *s6 , 1/2 );
+    var v4 = new THREE.Vector3( -(1/6) * s3 ,-(1/6) *s6, -1/2   );
 
 
     var t1 = new THREE.Vector3();

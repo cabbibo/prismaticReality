@@ -49,7 +49,7 @@ void main(){
 
   vec3 dif = pos.xyz - target.xyz;
 
-  force -= length( dif ) * length( dif ) * normalize( dif ) * 10.2;
+  force -= length( dif ) * length( dif ) * normalize( dif ) * 100.2;
 
 
   vel *= .5;
@@ -66,7 +66,7 @@ void main(){
   float r = min( .1 / (d * d * d * d * 200.) , .1);
 
 
-  gl_FragColor = vec4( p , .03 );
+  gl_FragColor = vec4( p , (target.w - pos.w) * .2 + pos.w );
 
 
 }

@@ -35,12 +35,12 @@ void main(){
 
   float rR = 1. + rand( uv * 20. );
 
-  vec3 axis = vec3( rX , rY , rZ );
+  vec3 axis = vec3( pos.xyz );
   axis = normalize( axis );
 
   float angle = pos.w + rR * dT * speed;
 
-  gl_FragColor = vec4( axis , angle );
+  gl_FragColor = vec4( pos.xyz , angle );
 
 
 }

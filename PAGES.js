@@ -1,12 +1,24 @@
-var PAGES = [
+
+
+var MakePages = function(){
+
+  firstLookup = makeSingleTexture( 1 , 0 );
+  secondLookup = makeSingleTexture( 1 , 0.001 );
+
+  testLookup = makeImageTexture(.3,  G.textures.mystery );
+  prismFlatLookup = makeImageTexture(.3,  G.textures.prismFlat );
+
+
+
+  var PAGES = [
 
   {
 
     title                        : "RAINBOWS",
 
-    pageTurnTime                 : 5000,
+    pageTurnTime                 : 1000,
 
-    targetTexture                : makeSingleTexture( 10  ), //makeMeshTexture( new THREE.IcosahedronGeometry( .4 , 1 )  ),
+    targetTexture                : firstLookup, //makeMeshTexture( new THREE.IcosahedronGeometry( .4 , 1 )  ),
     targetColorTexture           : makeRandomTexture( 1  ),
 
     targetSimulationUniforms     : {
@@ -15,8 +27,8 @@ var PAGES = [
                                     audioDisplacement: 0,
                                    },
 
-    targetRotationSimUniforms    : {
-                                    speed: 1.,
+    targetRotationSimulationUniforms    : {
+                                    speed: 0,
                                    },
 
     targetRenderUniforms         : {
@@ -25,7 +37,7 @@ var PAGES = [
                                     rainbowValue: 0
                                    },
 
-    cameraPosition               : new THREE.Vector3( 0 , 0 , 0.1 ),
+    cameraPosition               : new THREE.Vector3( 0 , 0 , 0.02 ),
     cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
 
 
@@ -36,9 +48,9 @@ var PAGES = [
 
     title                        : "MORE",
 
-    pageTurnTime                 : 5000,
+    pageTurnTime                 : 1000,
 
-    targetTexture                : makeMeshTexture( new THREE.IcosahedronGeometry( .01 , 1 )  ),
+    targetTexture                : firstLookup,
     targetColorTexture           : makeRandomTexture( 1  ),
 
     targetSimulationUniforms     : {
@@ -47,7 +59,7 @@ var PAGES = [
                                     audioDisplacement: 0,
                                    },
 
-    targetRotationSimUniforms    : {
+    targetRotationSimulationUniforms    : {
                                     speed: 1.,
                                    },
 
@@ -57,7 +69,69 @@ var PAGES = [
                                     rainbowValue: 0
                                    },
 
-    cameraPosition               : new THREE.Vector3( 1 , 0 , 0 ),
+    cameraPosition               : new THREE.Vector3( 0 , 0 , .4 ),
+    cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
+
+
+  }, 
+
+    {
+
+    title                        : "STORIES",
+
+    pageTurnTime                 : 1000,
+
+    targetTexture                : secondLookup,
+    targetColorTexture           : makeRandomTexture( 1  ),
+
+    targetSimulationUniforms     : {
+                                    dampening: .99,
+                                    dispersion: 0,
+                                    audioDisplacement: 0,
+                                   },
+
+    targetRotationSimulationUniforms    : {
+                                    speed: 1.,
+                                   },
+
+    targetRenderUniforms         : {
+                                    audioValue: 0,
+                                    colorValue: 1,
+                                    rainbowValue: 0
+                                   },
+
+    cameraPosition               : new THREE.Vector3( .1 , 0 , .2 ),
+    cameraTarget                 : new THREE.Vector3( .1 , 0 , 0 ),
+
+
+  }, 
+
+  {
+
+    title                        : "PRISM",
+
+    pageTurnTime                 : 1000,
+
+    targetTexture                : prismFlatLookup,
+    targetColorTexture           : makeRandomTexture( 1  ),
+
+    targetSimulationUniforms     : {
+                                    dampening: .99,
+                                    dispersion: 0,
+                                    audioDisplacement: 0,
+                                   },
+
+    targetRotationSimulationUniforms : {
+                                      speed: 1.,
+                                      },
+
+    targetRenderUniforms         : {
+                                    audioValue: 0,
+                                    colorValue: 1,
+                                    rainbowValue: 0
+                                   },
+
+    cameraPosition               : new THREE.Vector3( 0 , 0 , .2 ),
     cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
 
 
@@ -66,4 +140,9 @@ var PAGES = [
 
 
 
+
 ]
+
+return PAGES
+
+}

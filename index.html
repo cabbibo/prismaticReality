@@ -60,6 +60,19 @@ var pages = [];
 var tv1 = new THREE.Vector3();
 var tv2 = new THREE.Vector3();
 
+  G = {
+
+    loading:{
+
+      loaded:0,
+      neededToLoad:0
+
+    },
+
+
+  };
+
+
 </script>
 
 <script src="PhysicsRenderer.js"></script>
@@ -67,6 +80,7 @@ var tv2 = new THREE.Vector3();
 <script src="make.js"></script>
 <script src="Page.js"></script>
 <script src="PAGES.js"></script>
+<script src="loadFunctions.js"></script>
 
 
 <script>
@@ -87,6 +101,8 @@ var tv2 = new THREE.Vector3();
     res.easing(TWEEN.Easing.Quadratic.InOut);
     return res;
   };
+
+
 
   var scene , target, camera , renderer, clock , controls;
 
@@ -139,22 +155,28 @@ var tv2 = new THREE.Vector3();
 
   var shaders = new ShaderLoader( 'shaders' );
 
-  shaders.load( 'ss-everything'    , 'sim'    , 'simulation' );
-  shaders.load( 'ss-everythingRot' , 'simRot'    , 'simulation' );
+  //shaders.load( 'ss-everything'    , 'sim'    , 'simulation' );
+  //shaders.load( 'ss-everythingRot' , 'simRot'    , 'simulation' );
+//
+  //shaders.load( 'fs-prism'  , 'prism' , 'fragment'   );
+  //shaders.load( 'vs-prism'  , 'prism' , 'vertex'   );
+//
+  //shaders.shaderSetLoaded = function(){
+//
+  //  init();
+  //  animate();
+//
+  //}
 
-  shaders.load( 'fs-prism'  , 'prism' , 'fragment'   );
-  shaders.load( 'vs-prism'  , 'prism' , 'vertex'   );
 
-  shaders.shaderSetLoaded = function(){
-
-    init();
-    animate();
-
-  }
-
+  beginLoad();
 
   
   function init(){
+
+      var url = document.URL;
+      var stringArray = url.split("#");
+      if( stringArray[1] ){ currentPage = stringArray[1]; }
 
       /*
 
@@ -165,8 +187,8 @@ var tv2 = new THREE.Vector3();
 
       var ar = window.innerWidth / window.innerHeight;
 
-      camera = new THREE.PerspectiveCamera( 75, ar , .01, 100 );
-      camera.position.z = 0.01;
+      camera = new THREE.PerspectiveCamera( 50, ar , .0001, 10 );
+      camera.position.z = .025;
 
     
 
@@ -186,6 +208,18 @@ var tv2 = new THREE.Vector3();
       stats.domElement.style.bottom = "-30px";
       stats.domElement.style.zIndex = "999";
       document.body.appendChild( stats.domElement );
+
+
+      // GONNA TAKE A WHILE
+      PAGES = MakePages();
+
+      for( var i = 0; i < PAGES.length; i++ ){
+
+        var p = new Page( i , PAGES[i] );
+        pages.push( p );
+
+      }
+
 
 
 
@@ -227,21 +261,21 @@ var tv2 = new THREE.Vector3();
       size = 100;
  
 
-      simulation.reset( makeRandomTexture( 0 ) );
-      rotationSim.reset( makeRandomTexture( 0 ) );
-      T_TARGET.value = makeRandomTexture( 1 );
+      simulation.reset( firstLookup );
+      rotationSim.reset( makeNormalizedTexture() );
+      //T_TARGET.value = makeRandomTexture( 10 );
 
 
-      for( var i = 0; i < PAGES.length; i++ ){
-
-        var p = new Page( i , PAGES[i] );
-        pages.push( p );
-
-      }
 
       pages[currentPage].start();
-      
 
+      var geo = new THREE.IcosahedronGeometry( .01 , 1 );
+      var mat = new THREE.MeshBasicMaterial({color:"#ffffff",map:G.textures.mystery});
+      var mesh = new THREE.Mesh(geo , mat );
+      //scene.add( mesh );
+      
+    window.addEventListener( 'keydown', keydown, false );
+    window.addEventListener( 'keyup', keyup, false );
   }
 
   function animate(){
@@ -276,7 +310,7 @@ var tv2 = new THREE.Vector3();
     }
   }
 
-  function turnPageBacl(){
+  function turnPageBack(){
     currentPage--;
     if(currentPage >= 0 ){
       pages[currentPage].start();
@@ -284,6 +318,20 @@ var tv2 = new THREE.Vector3();
       currentPage = 0;
     }
   }
+
+  function keydown( e ){
+    //console.log( e );
+    //if( e.code = "ArrowRight" ){ turnPage(); }
+  }
+  function keyup( e ){
+    console.log( e );
+    if( e.code == "ArrowRight" ){ 
+      console.log('ss'); 
+      turnPage(); 
+    }
+    if( e.code == "ArrowLeft" ){ turnPageBack(); }
+  }
+
 
 
 

@@ -8,11 +8,11 @@ function Page(id , params ){
   this.targetTexture                = params.targetTexture;
   this.targetColorTexture           = params.targetColorTexture;
   this.targetSimulationUniforms     = params.targetSimulationUniforms;
-  this.targetRotationSimUniforms    = params.targetRotationSimulationUniforms;
+  this.targetRotationSimulationUniforms    = params.targetRotationSimulationUniforms;
   this.targetRenderUniforms         = params.targetRenderUniforms;
 
-  this.cameraPosition               = params.cameraPosition;
-  this.cameraTarget                 = params.cameraTarget;
+  this.cameraPosition               = params.cameraPosition.clone();
+  this.cameraTarget                 = params.cameraTarget.clone();
 
 
   this.simVals    = this.cloneUniforms( params.targetSimulationUniforms );
@@ -37,9 +37,14 @@ Page.prototype.cloneUniforms = function(uniforms){
 }
 
 Page.prototype.start = function(){
+  title.innerHTML = "";
+
+  console.log( this.title );
+  console.log( this.rotVals);
+  console.log( this.targetRotationSimulationUniforms );
 
   T_TARGET.value = this.targetTexture;
-  
+
   T_TARGETCOL.value = this.targetColorTexture;
 
   this.getUniforms( renderUniforms , this.renderVals );
@@ -48,6 +53,9 @@ Page.prototype.start = function(){
 
   this.currentCameraPos = camera.position.clone();
   this.currentCameraTarget = target.clone();
+  console.log( "CC");
+  console.log( this.currentCameraPos );
+  console.log( this.cameraPosition );
 
   var tween = new TWEEN.Tween( this.currentCameraPos ).to( this.cameraPosition , this.pageTurnTime );
 
@@ -56,7 +64,7 @@ Page.prototype.start = function(){
   }.bind( this ));
 
   tween.onComplete( function(){
-    camera.position.copy( this.cameraPosition );
+    //camera.position.copy( this.cameraPosition );
   }.bind( this ) );
 
   tween.start();
@@ -69,10 +77,11 @@ Page.prototype.start = function(){
   }.bind( this ));
 
   tween.onComplete( function(){
-    target.copy( this.cameraTarget );
+   // target.copy( this.cameraTarget );
   }.bind( this ) );
 
   tween.start();
+
 
 
 
@@ -100,14 +109,14 @@ Page.prototype.start = function(){
 
   tween.start();
 
-  var tween = new TWEEN.Tween( this.renderVals ).to( this.targetRotationSimulationUniforms , this.pageTurnTime );
+  var tween = new TWEEN.Tween( this.renderVals ).to( this.targetRenderUniforms , this.pageTurnTime );
 
   tween.onUpdate( function( t ){
     this.setUniforms( renderUniforms , this.renderVals );
   }.bind( this ));
 
   tween.onComplete( function(){
-    this.setUniforms( renderUniforms , this.targetRotationSimulationUniforms );
+    this.setUniforms( renderUniforms , this.targetRenderUniforms );
 
     this.onComplete();
   }.bind( this ) );
@@ -132,8 +141,13 @@ Page.prototype.onComplete = function(){
 Page.prototype.setUniforms = function( uniforms, values){
 
   for( var propt in values ){
+    console.log( propt );
 
     if( uniforms[propt] ){ 
+
+      if( propt == "speed" ){
+        console.log( values[propt] );
+      }
       uniforms[propt].value = values[propt];
     }else{
       console.log( "WTF");
