@@ -13,6 +13,7 @@ var MakePages = function(){
   verticalRotationAxis = makeVerticalTexture();
 
   multitudeTexture = makeMeshTexture( new THREE.IcosahedronGeometry( .4 , 4 ) , .004 , .0);
+  sunTexture = makeMeshTexture( new THREE.IcosahedronGeometry( .1 , 4 ) , .007 , .0);
 
   var PAGES = [
 
@@ -27,7 +28,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    dampening: .99,
+                                    toTargetForce: 100,
+                                    dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -41,7 +43,8 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    brightness:0
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0 , 0.02 ),
@@ -49,6 +52,79 @@ var MakePages = function(){
 
 
   }, 
+
+  {
+
+    title                        : "SUN",
+
+    pageTurnTime                 : 1000,
+
+    targetTexture                : sunTexture, //makeMeshTexture( new THREE.IcosahedronGeometry( .4 , 1 )  ),
+    targetColorTexture           : makeRandomTexture( 1  ),
+    target2Texture               : randomRotationAxis,
+
+    targetSimulationUniforms     : {
+                                    toTargetForce: 100,
+                                    dampening: .6,
+                                    dispersion: 0,
+                                    audioDisplacement: 0,
+                                   },
+
+    targetRotationSimulationUniforms    : {
+                                    speed: 3,
+                                    toTargetAxis:1,
+                                    toTargetAngle:0,
+                                   },
+
+    targetRenderUniforms         : {
+                                    audioValue: 0,
+                                    colorValue: 1,
+                                    rainbowValue: 0,
+                                    brightness:1
+                                   },
+
+    cameraPosition               : new THREE.Vector3( 0 , 0 , 1 ),
+    cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
+
+
+  }, 
+
+  {
+
+    title                        : "BEYOND",
+
+    pageTurnTime                 : 1000,
+
+    targetTexture                : sunTexture, //makeMeshTexture( new THREE.IcosahedronGeometry( .4 , 1 )  ),
+    targetColorTexture           : makeRandomTexture( 1  ),
+    target2Texture               : randomRotationAxis,
+
+    targetSimulationUniforms     : {
+                                    toTargetForce: 100,
+                                    dampening: .6,
+                                    dispersion: 0,
+                                    audioDisplacement: 0,
+                                   },
+
+    targetRotationSimulationUniforms    : {
+                                    speed: .1,
+                                    toTargetAxis:1,
+                                    toTargetAngle:0,
+                                   },
+
+    targetRenderUniforms         : {
+                                    audioValue: 0,
+                                    colorValue: 1,
+                                    rainbowValue: 0,
+                                    brightness:.9
+                                   },
+
+    cameraPosition               : new THREE.Vector3( .1 , 0 , 0.06 ),
+    cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
+
+
+  }, 
+
 
 
   {
@@ -62,7 +138,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    dampening: .99,
+                                    toTargetForce: 100,
+                                    dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -76,10 +153,11 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    brightness:0
                                    },
 
-    cameraPosition               : new THREE.Vector3( 0 , 0 , .4 ),
+    cameraPosition               : new THREE.Vector3( 0 , 0 , .2 ),
     cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
 
 
@@ -96,7 +174,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    dampening: .99,
+                                    toTargetForce: 100,
+                                    dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -131,7 +210,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    dampening: .99,
+                                    toTargetForce: 100,
+                                    dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -167,7 +247,8 @@ var MakePages = function(){
     target2Texture               : verticalRotationAxis,
 
     targetSimulationUniforms     : {
-                                    dampening: .99,
+                                    toTargetForce: 100,
+                                    dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -203,7 +284,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    dampening: .99,
+                                    toTargetForce: 100,
+                                    dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -230,7 +312,7 @@ var MakePages = function(){
 
   {
 
-    title                        : "OPALS / EMERGENCE",
+    title                        : "EMERGENCE",
 
     pageTurnTime                 : 1000,
 
@@ -239,7 +321,45 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    dampening: .99,
+                                    toTargetForce: 100,
+                                    dampening: .6,
+                                    dispersion: 0,
+                                    audioDisplacement: 0,
+                                   },
+
+    targetRotationSimulationUniforms : {
+                                      speed: 1.2,
+                                      toTargetAxis:1,
+                                      toTargetAngle:0,
+                                 
+                                   
+                                      },
+
+    targetRenderUniforms         : {
+                                    audioValue: 0,
+                                    colorValue: 1,
+                                    rainbowValue: 0
+                                   },
+
+    cameraPosition               : new THREE.Vector3( 0 , 0.0 , 1. ),
+    cameraTarget                 : new THREE.Vector3( 0 , 0.0 , 0 ),
+
+
+  }, 
+
+  {
+
+    title                        : "OPALS",
+
+    pageTurnTime                 : 1000,
+
+    targetTexture                : multitudeTexture,
+    targetColorTexture           : makeRandomTexture( 1  ),
+    target2Texture               : randomRotationAxis,
+
+    targetSimulationUniforms     : {
+                                    toTargetForce: 100,
+                                    dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -275,7 +395,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    dampening: .99,
+                                    toTargetForce: 100,
+                                    dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -312,8 +433,11 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
+                                    toTargetForce: 1,
                                     dampening: .99,
                                     dispersion: 0,
+                                    audioRadius: .5,
+                                    audioPower: .02,
                                     audioDisplacement: 0,
                                    },
 
@@ -351,6 +475,7 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
+                                    toTargetForce: .1,
                                     dampening: .99,
                                     dispersion: 0,
                                     audioDisplacement: 0,
@@ -387,7 +512,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    dampening: .99,
+                                    toTargetForce: 100,
+                                    dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },

@@ -119,7 +119,8 @@ var tv2 = new THREE.Vector3();
   var T_TARGET = { type:"t", value: null};
   var T_TARGET2 = { type:"t", value: null};
   var T_TARGETCOL = { type:"t", value: null};
-  var T_AUDIO = {type:"t", value:null}
+  var T_AUDIO = {type:"t", value:null};
+  var REPELERS = {type:"v3v", value:[]};
 
   var simulationUniforms = {
   
@@ -129,10 +130,14 @@ var tv2 = new THREE.Vector3();
     audioDisplacement: { type:"f", value: 0},
     dampening: { type:"f", value: 0},
     dispersion: { type:"f", value: 0},
+    toTargetForce: { type:"f", value: 1},
+    audioRadius:{type:"f",value:0},
+    audioPower:{type:"f",value:0},
     t_target :T_TARGET,
     t_target2 :T_TARGET2,
     t_targetCol:T_TARGETCOL,
     t_audio:T_AUDIO,
+    repelers:REPELERS
 
   }
 
@@ -155,13 +160,16 @@ var tv2 = new THREE.Vector3();
     audioValue: { type:"f", value: 0},
     rainbowValue: { type:"f", value: 0},
     colorValue: { type:"f", value: 0},
+    brightness:{type:"f",value:0},
     t_target : T_TARGET,
     t_target2 : T_TARGET2,
     t_targetCol : T_TARGETCOL,
     t_audio:T_AUDIO,
 
     t_normal : { type: "t" , value : null },
-    lightPos : { type:"v3" , value:null}
+    lightPos : { type:"v3" , value:null},
+    repelers:REPELERS
+
 
   }
 
@@ -179,6 +187,9 @@ var tv2 = new THREE.Vector3();
 
 
   beginLoad();
+
+  var numRepelers = 20;
+  var repelers = [];
 
   
   function init(){
@@ -248,13 +259,34 @@ var tv2 = new THREE.Vector3();
 
 
 
+      for( var i = 0; i < numRepelers; i++ ){
+
+        r = new THREE.Mesh( geo , mat );
+
+        r.position.x = Math.random()  -.5;
+        r.position.y = Math.random()  -.5;
+        r.position.z = Math.random()  -.5;
+        r.position.normalize();
+        r.position.multiplyScalar( .6 );
+
+        REPELERS.value.push( r.position );
+
+        scene.add( r );
+        repelers.push(r);
+      }
+
+
+
+
       /*
 
         SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION SETTING UP SIMULATION 
 
       */
 
-      simulation  = new PhysicsRenderer( SIZE , shaders.ss.sim    , renderer );
+      sim = shaders.setValue( shaders.ss.sim , 'SIZE' , numRepelers );
+
+      simulation  = new PhysicsRenderer( SIZE , sim   , renderer );
       rotationSim = new PhysicsRenderer( SIZE , shaders.ss.simRot , renderer );
 
 
@@ -285,7 +317,7 @@ var tv2 = new THREE.Vector3();
       rotationSim.addBoundTexture( renderUniforms.t_rot , 'output' );
 
 
-      size = 100;
+     // size = 100;
  
 
       simulation.reset( firstLookup );

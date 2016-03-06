@@ -2,6 +2,8 @@ uniform sampler2D t_normal;
 uniform sampler2D t_audio;
 uniform vec3 lightPos;
 
+uniform float brightness;
+
 varying vec3 vPos;
 varying float vDist;
 
@@ -36,7 +38,7 @@ void main(){
 
 
 
-  vec3 fNorm = uvNormalMap( t_normal , vPos , vUv , vNorm , .03 , 10. , vOffset );
+  vec3 fNorm = uvNormalMap( t_normal , vPos , vUv , vNorm , .1 , 10. , vOffset );
 
   vec3 refl = reflect( eye , fNorm );
 
@@ -44,12 +46,14 @@ void main(){
 
   float match = max( 0., dot( -refl , lightDir ));
 
-  vec3 aCol = texture2D( t_audio , vec2( match, 0.) ).xyz;
+  vec3 aCol = texture2D( t_audio , vec2( match , 0.) ).xyz;
 
   vec3 col =  hsv( match , .5 , 1.);
-  col = ( normalize(refl) * .5 + .5) * match * match + (fNorm * .5 + .5);
+  col = ( normalize(refl) * .5 + .5) * match * match;// + (fNorm * .5 + .5);
 
-  col = aCol;
+  col += aCol ;
+
+  col += vec3( brightness, brightness,brightness);
   //col = vec3( vUv.x , vUv.y , 1. );
 
   //col = texture2D( t_normal , vUv * 2.0 ).xyz;
