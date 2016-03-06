@@ -42,10 +42,13 @@ function loadImages(){
   G.textures = {};
 
  // G.textures.matcap   = loadImage('img/rough-aluminium.jpg');
-  //G.textures.normal   = loadImage('img/t_n_snakeSkin.png' );
+  
+ // G.textures.normal   = loadImage('img/t_n_snakeSkin.png' );
   //G.textures.colorTex = loadImage('assets/Model.jpg' );
   G.textures.mystery   = loadImage('img/mystery.jpg' );
   G.textures.prismFlat   = loadImage('img/prismFlat.jpg' );
+  //G.textures.normal = loadImage( 'img/normals/ice-snow.jpg' );
+  G.textures.normal = loadImage( 'img/normals/carbonFiber.png' );
 
 }
 

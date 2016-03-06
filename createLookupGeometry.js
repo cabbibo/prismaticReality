@@ -6,6 +6,9 @@
     var positions = new Float32Array(  size * size * 3 * 12 );
     var normals = new Float32Array(  size * size * 3 * 12 );
 
+    var uvs = new Float32Array(  size * size * 2 * 12 );
+    var ids = new Float32Array(  size * size * 1 * 12 );
+
     // position in tetrahedron
     var triPos = new Float32Array(  size * size * 3 * 12 );
 
@@ -109,7 +112,7 @@
     
     }
 
-    for ( var i = 0, j = 0, l = triPos.length / 3; i < l; i ++, j += 3 ) {
+    for ( var i = 0, j = 0, l = normals.length / 3; i < l; i ++, j += 3 ) {
 
       var f = Math.floor( i / 12 );
 
@@ -124,15 +127,63 @@
     
     }
 
+    for ( var i = 0, j = 0, l = uvs.length / 2; i < l; i ++, j += 2 ) {
+
+      var f = Math.floor( i / 12 );
+
+      var index = i % 3;
+
+
+
+      face = Math.floor( index / 3 );
+
+      if( index == 0 ){
+
+        uvs[ j     ] = 0;
+        uvs[ j + 1 ] = 0;
+
+      }else if( index == 1 ){
+
+        uvs[ j     ] = 1;
+        uvs[ j + 1 ] = 0;
+
+      }else{
+
+        uvs[ j     ] = .5;
+        uvs[ j + 1 ] = 1;
+
+      }
+
+
+  
+    
+    }
+
+
+    for ( var i = 0, j = 0, l = ids.length; i < l; i ++, j += 1 ) {
+
+      var f = Math.floor( i / 12 );
+
+      ids[ i ] = f;
+
+    
+    }
+
+
 
 
 
     var posA = new THREE.BufferAttribute( positions , 3 );
     var triA = new THREE.BufferAttribute( triPos , 3 );
     var norA = new THREE.BufferAttribute( normals , 3 );
+    var uvA  = new THREE.BufferAttribute( uvs , 2 );
+    var idA  = new THREE.BufferAttribute( ids , 1 );
+
     geo.addAttribute( 'position' , posA );
     geo.addAttribute( 'triPos'   , triA );
     geo.addAttribute( 'normal'   , norA );
+    geo.addAttribute( 'uv'       , uvA );
+    geo.addAttribute( 'id'       , idA );
 
     return geo;
     

@@ -52,9 +52,13 @@
 <script src="lib/ShaderLoader.js"></script>
 <script src="lib/Tween.js"></script>
 
+<script src="lib/AudioController.js"></script>
+<script src="lib/UserAudio.js"></script>
+<script src="lib/Stream.js"></script>
+
 <script>
 
-var SIZE = 256;
+var SIZE = 512;
 var pages = [];
 
 var tv1 = new THREE.Vector3();
@@ -115,6 +119,7 @@ var tv2 = new THREE.Vector3();
   var T_TARGET = { type:"t", value: null};
   var T_TARGET2 = { type:"t", value: null};
   var T_TARGETCOL = { type:"t", value: null};
+  var T_AUDIO = {type:"t", value:null}
 
   var simulationUniforms = {
   
@@ -127,12 +132,18 @@ var tv2 = new THREE.Vector3();
     t_target :T_TARGET,
     t_target2 :T_TARGET2,
     t_targetCol:T_TARGETCOL,
+    t_audio:T_AUDIO,
 
   }
 
   var rotationSimUniforms = {
     dT: simulationUniforms.dT,
     time: simulationUniforms.time,
+    toTargetAxis:{ type:"f", value:0},
+    toTargetAngle:{ type:"f", value:0},
+    t_target :T_TARGET,
+    t_target2 :T_TARGET2,
+    t_audio:T_AUDIO,
     speed :{ type:"f" , value: 0},
   }
 
@@ -147,26 +158,24 @@ var tv2 = new THREE.Vector3();
     t_target : T_TARGET,
     t_target2 : T_TARGET2,
     t_targetCol : T_TARGETCOL,
+    t_audio:T_AUDIO,
+
+    t_normal : { type: "t" , value : null },
+    lightPos : { type:"v3" , value:null}
 
   }
 
 
 
+  var audio = new AudioController();
+  audio.mute.gain.value = 0;
+
+  var userAudio = new UserAudio(audio.ctx , audio.gain ); 
+
+  var stream = new Stream( "audio/love.mp3", audio.ctx , audio.gain );
+  //stream.play();
 
   var shaders = new ShaderLoader( 'shaders' );
-
-  //shaders.load( 'ss-everything'    , 'sim'    , 'simulation' );
-  //shaders.load( 'ss-everythingRot' , 'simRot'    , 'simulation' );
-//
-  //shaders.load( 'fs-prism'  , 'prism' , 'fragment'   );
-  //shaders.load( 'vs-prism'  , 'prism' , 'vertex'   );
-//
-  //shaders.shaderSetLoaded = function(){
-//
-  //  init();
-  //  animate();
-//
-  //}
 
 
   beginLoad();
@@ -174,9 +183,15 @@ var tv2 = new THREE.Vector3();
   
   function init(){
 
+
+
       var url = document.URL;
       var stringArray = url.split("#");
       if( stringArray[1] ){ currentPage = stringArray[1]; }
+
+      T_AUDIO.value = audio.texture;
+
+      renderUniforms.t_normal.value = G.textures.normal;
 
       /*
 
@@ -221,6 +236,15 @@ var tv2 = new THREE.Vector3();
       }
 
 
+      var geo = new THREE.IcosahedronGeometry( .01 , 2 );
+      var mat = new THREE.MeshBasicMaterial();
+      var light = new THREE.Mesh( geo , mat );
+      light.position.x = .1;
+      light.position.y = .1;
+      light.position.z = -.1;
+      renderUniforms.lightPos.value = light.position;
+      scene.add( light );
+
 
 
 
@@ -238,7 +262,10 @@ var tv2 = new THREE.Vector3();
 
       var mat = new THREE.ShaderMaterial({
         uniforms: renderUniforms,
-        attributes: { triPos: {type:"v3", value:null}},
+        attributes: { 
+            triPos: {type:"v3", value:null},
+            id:{type:"f",value:null}
+        },
         vertexShader: shaders.vs.prism,
         fragmentShader: shaders.fs.prism,
         side: THREE.BackSide
@@ -290,11 +317,13 @@ var tv2 = new THREE.Vector3();
     rotationSim.update();
 
     controls.update();
+    audio.update();
 
     camera.lookAt( target );
     
     renderer.render( scene , camera );
     stats.update();
+
 
 
     requestAnimationFrame( animate );

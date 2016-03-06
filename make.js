@@ -1,10 +1,10 @@
-    function makeRandomTexture( size ){
+    function makeRandomTexture( sizeRand ){
  
       var data = new Float32Array( SIZE * SIZE  * 4 );
 
       for( var i =0; i < data.length; i++ ){
 
-        data[i] = (Math.random() - .5 ) * size;
+        data[i] = (Math.random() - .5 ) * sizeRand;
   
         if( i % 4 == 4 ){
           data[i] = 0;
@@ -14,9 +14,29 @@
       }
 
       return makeDataTexture( data );
+
     }
 
-    function makeNormalizedTexture( size ){
+    function makeMultiTexture( sizeRand ){
+ 
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+
+      for( var i =0; i < data.length; i++ ){
+
+        data[i] = (Math.random() - .5 ) * sizeRand;
+  
+        if( i % 4 == 4 ){
+          data[i] = 0;
+        }
+
+
+      }
+
+      return makeDataTexture( data );
+      
+    }
+
+    function makeNormalizedTexture(){
  
       var data = new Float32Array( SIZE * SIZE  * 4 );
 
@@ -37,6 +57,30 @@
         data[i+2] =tv1.z;
   
         
+        data[i +3 ] = Math.random();
+
+        if( i == 0 ){ data[i+3] = 0; }
+
+
+      }
+
+      return makeDataTexture( data );
+    }
+
+    function makeVerticalTexture(){
+ 
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+
+      for( var i =0; i < data.length; i += 4 ){
+
+        tv1.set( 0 , 1 , 0 );
+        tv1.normalize();
+
+        data[i+0] =tv1.x;
+        data[i+1] =tv1.y;
+        data[i+2] =tv1.z;
+  
+        
         data[i +3 ] = 0;
 
 
@@ -45,7 +89,7 @@
       return makeDataTexture( data );
     }
 
-    function makeGridTexture(size){
+    function makeGridTexture(){
 
       var data = new Float32Array( SIZE * SIZE  * 4 );
       
@@ -175,7 +219,7 @@
 
 
 
-    function makeMeshTexture( geometry ){
+    function makeMeshTexture( geometry , triSize , triVariation){
   
       var data = new Float32Array( SIZE * SIZE  * 4 );
       
@@ -194,6 +238,7 @@
         data[ i + 2 ] = f.z; 
 
         //console.log( f.x );
+        data[ i + 3 ] = triSize + triVariation * (Math.random()-.5)
 
       }
 

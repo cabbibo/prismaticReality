@@ -6,6 +6,7 @@ function Page(id , params ){
   this.pageTurnTime                 = params.pageTurnTime;
 
   this.targetTexture                = params.targetTexture;
+  this.target2Texture               = params.target2Texture;
   this.targetColorTexture           = params.targetColorTexture;
   this.targetSimulationUniforms     = params.targetSimulationUniforms;
   this.targetRotationSimulationUniforms    = params.targetRotationSimulationUniforms;
@@ -42,8 +43,10 @@ Page.prototype.start = function(){
   console.log( this.title );
   console.log( this.rotVals);
   console.log( this.targetRotationSimulationUniforms );
+  console.log( rotationSimUniforms );
 
   T_TARGET.value = this.targetTexture;
+  T_TARGET2.value = this.target2Texture;
 
   T_TARGETCOL.value = this.targetColorTexture;
 
@@ -130,7 +133,7 @@ Page.prototype.start = function(){
 
 Page.prototype.onComplete = function(){
 
-  var string = (this.id + 1) + " : " + this.title;
+  var string = (this.id + 1) + ". " + this.title;
 
   title.innerHTML = string;
 
@@ -141,13 +144,13 @@ Page.prototype.onComplete = function(){
 Page.prototype.setUniforms = function( uniforms, values){
 
   for( var propt in values ){
-    console.log( propt );
 
     if( uniforms[propt] ){ 
 
-      if( propt == "speed" ){
+      if( propt == "toTargetAngle" ){
         console.log( values[propt] );
       }
+
       uniforms[propt].value = values[propt];
     }else{
       console.log( "WTF");
