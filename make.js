@@ -17,6 +17,32 @@
 
     }
 
+
+    function makeOpalTexture( numOpals ){
+ 
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+
+      for( var i =0; i < data.length; i+=4 ){
+
+        var index = Math.floor( i / 4 );
+        var opalIndex = Math.floor( index / numOpals );
+        var indexInOpal = index - opalIndex * SIZE * SIZE / numOpals;
+
+
+
+        data[i] = (Math.random() - .5 ) * sizeRand;
+  
+        if( i % 4 == 4 ){
+          data[i] = 0;
+        }
+
+
+      }
+
+      return makeDataTexture( data );
+
+    }
+
     function makeMultiTexture( sizeRand ){
  
       var data = new Float32Array( SIZE * SIZE  * 4 );
@@ -296,4 +322,9 @@
 
       return texture;
 
+    }
+
+    function random( seed ) {
+      var x = Math.sin(seed++) * 10000;
+      return x - Math.floor(x);
     }

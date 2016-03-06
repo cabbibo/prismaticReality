@@ -7,8 +7,8 @@ const int size  = @SIZE;
 
 uniform vec3 repelers[ size ];
 
-
-
+$simplex
+$curl
 
 // TODO:
 // dispersion
@@ -25,6 +25,8 @@ uniform float audioRepeller;
 uniform float speed;
 uniform float time;
 uniform float dampening;
+uniform float dispersion;
+uniform float curlNoiseSize;
 uniform float toTargetForce;
 uniform float audioRadius;
 uniform float audioPower;
@@ -64,6 +66,8 @@ void main(){
 
   // moving to original pos;
   force -= length( dif ) * length( dif ) * normalize( dif ) * toTargetForce;
+
+  force += curlNoise( pos.xyz * curlNoiseSize ) * dispersion;
 
 
   for( int i = 0; i < size; i++ ){

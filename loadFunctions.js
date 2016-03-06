@@ -47,6 +47,7 @@ function loadImages(){
   //G.textures.colorTex = loadImage('assets/Model.jpg' );
   G.textures.mystery   = loadImage('img/mystery.jpg' );
   G.textures.prismFlat   = loadImage('img/prismFlat.jpg' );
+  G.textures.refractionFlat   = loadImage('img/refraction.png' );
   G.textures.normal = loadImage( 'img/normals/ice-snow.jpg' );
   //G.textures.normal = loadImage( 'img/normals/carbonFiber.png' );
 

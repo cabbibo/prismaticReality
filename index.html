@@ -51,6 +51,7 @@
 <script src="lib/TrackballControls.js"></script>
 <script src="lib/ShaderLoader.js"></script>
 <script src="lib/Tween.js"></script>
+<script src="lib.noise.js"></script>
 
 <script src="lib/AudioController.js"></script>
 <script src="lib/UserAudio.js"></script>
@@ -58,7 +59,7 @@
 
 <script>
 
-var SIZE = 512;
+var SIZE = 256;
 var pages = [];
 
 var tv1 = new THREE.Vector3();
@@ -133,6 +134,7 @@ var tv2 = new THREE.Vector3();
     toTargetForce: { type:"f", value: 1},
     audioRadius:{type:"f",value:0},
     audioPower:{type:"f",value:0},
+    curlNoiseSize:{ type:"f", value:0},
     t_target :T_TARGET,
     t_target2 :T_TARGET2,
     t_targetCol:T_TARGETCOL,
@@ -156,11 +158,17 @@ var tv2 = new THREE.Vector3();
   var renderUniforms = {
 
     t_pos:{ type:"t" , value: null },
+    t_oPos:{ type:"t" , value: null },
     t_rot:{ type:"t" , value: null },
     audioValue: { type:"f", value: 0},
     rainbowValue: { type:"f", value: 0},
     colorValue: { type:"f", value: 0},
     brightness:{type:"f",value:0},
+
+    biggerFartherAddition:{type:"f",value:0},
+    audioDisplacement:{type:"f",value:0},
+
+
     t_target : T_TARGET,
     t_target2 : T_TARGET2,
     t_targetCol : T_TARGETCOL,
@@ -314,6 +322,8 @@ var tv2 = new THREE.Vector3();
 
 
       simulation.addBoundTexture( renderUniforms.t_pos , 'output' );
+      simulation.addBoundTexture( renderUniforms.t_oPos , 'oOutput' );
+
       rotationSim.addBoundTexture( renderUniforms.t_rot , 'output' );
 
 

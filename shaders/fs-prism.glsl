@@ -13,6 +13,12 @@ varying vec2 vUv;
 varying vec3 vCol;
 varying float vID;
 
+
+varying vec3 vColor;
+varying vec3 vAudio;
+
+varying vec3 vVel;
+
 varying vec2 vOffset;
 
 
@@ -54,6 +60,8 @@ void main(){
   col += aCol ;
 
   col += vec3( brightness, brightness,brightness);
+
+  col = vColor;
   //col = vec3( vUv.x , vUv.y , 1. );
 
   //col = texture2D( t_normal , vUv * 2.0 ).xyz;
