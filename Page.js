@@ -242,7 +242,7 @@ Page.prototype.setUniforms = function( uniforms, values){
     if( uniforms[propt] ){ 
 
       if( propt == "toTargetAngle" ){
-        console.log( values[propt] );
+        //console.log( values[propt] );
       }
 
       uniforms[propt].value = values[propt];

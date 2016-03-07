@@ -17,6 +17,38 @@
 
     }
 
+    function makeHueSphereTexture( texture ){
+ 
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+      var tData = texture.image.data;
+
+      var c = new THREE.Color();
+      for( var i =0; i < data.length; i+=4 ){
+
+        tv1.set( tData[i+0], tData[i+1], tData[i+2]);
+
+        var r = tv1.length();
+       // var angle = Math.atan2( tv1.x , tv1.y );
+        var angle = Math.acos( tv1.z / r );
+        //if( i < 1000 ){ console.log( angle ); }
+        c.setHSL(2 * Math.abs(angle) / Math.PI  , 1 , .5 );
+
+        if( i < 1000 ){ console.log(c); }
+
+
+        data[i+0] = c.r;
+        data[i+1] = c.g;
+        data[i+2] = c.b;
+        data[i+3] = 0;
+        
+
+
+      }
+
+      return makeDataTexture( data );
+
+    }
+
 
 
 
@@ -304,10 +336,12 @@
           data[ i + 3 ] = .1;
        
         }else{
+
           data[ i + 0 ] = (Math.random()) * size - size / 2; 
           data[ i + 1 ] = (Math.random()) * size - size / 2; 
           data[ i + 2 ] = (Math.random()) * size - size / 2; 
           data[ i + 3 ] = othersSize;
+          
         }
 
         //console.log( f.x );
