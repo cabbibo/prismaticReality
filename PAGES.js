@@ -651,11 +651,12 @@ var MakePages = function(){
                                     audioValue: 0,
                                     colorValue: 1,
                                     rainbowValue: 0,
-                                    normalColorAmount:.9,
+                                    normalColorAmount:0,
                                     audioColorAmount:.5,
-                                    reflectColorAmount:0,
+                                    reflectColorAmount:0.4,
                                     normalMapSize:.01,
                                     normalMapDepth:2,
+                                    individualAudioAmount:1,
                                     matchHueAmount:0
                                    },
 
@@ -807,7 +808,7 @@ var MakePages = function(){
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                     audioRadius: .5,
-                                    audioPower: .002,
+                                    audioPower: .01,
                                    },
 
     targetRotationSimulationUniforms : {
