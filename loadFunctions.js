@@ -50,6 +50,7 @@ function loadImages(){
   G.textures.refractionFlat   = loadImage('img/refraction.png' );
   G.textures.normal = loadImage( 'img/normals/ice-snow.jpg' );
   G.textures.cabbiboEnd = loadImage( 'img/cabbiboEnd.png' );
+  G.textures.sem = loadImage( 'img/matcap/test2.png' );
   //G.textures.normal = loadImage( 'img/normals/carbonFiber.png' );
 
 }

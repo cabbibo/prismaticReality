@@ -175,6 +175,8 @@ tMouseVal = {
     t_pos:{ type:"t" , value: null },
     t_oPos:{ type:"t" , value: null },
     t_rot:{ type:"t" , value: null },
+
+    t_sem:{type:"t",value:null},
     
     audioValue: { type:"f", value: 0},
     rainbowValue: { type:"f", value: 0},
@@ -199,6 +201,7 @@ tMouseVal = {
 
     normalMapSize : {type:"f",value:.1},
     normalMapDepth : {type:"f",value:1},
+    semAmount:{type:"f",value:0},
 
 
 
@@ -245,6 +248,7 @@ tMouseVal = {
       T_AUDIO.value = audio.texture;
 
       renderUniforms.t_normal.value = G.textures.normal;
+      renderUniforms.t_sem.value = G.textures.sem;
 
       /*
 

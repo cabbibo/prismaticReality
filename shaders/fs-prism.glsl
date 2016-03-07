@@ -1,5 +1,6 @@
 uniform sampler2D t_normal;
 uniform sampler2D t_audio;
+uniform sampler2D t_sem;
 uniform vec3 lightPos;
 
 uniform float brightness;
@@ -11,6 +12,7 @@ uniform float normalColorAmount;
 uniform float individualColorAmount;
 uniform float individualAudioAmount;
 uniform float matchHueAmount;
+uniform float semAmount;
 
 uniform float normalMapSize;
 uniform float normalMapDepth;
@@ -45,6 +47,7 @@ $simplex
 $hsv
 $uvNormalMap
 $rand
+$semLookup
 
 
 void main(){
@@ -58,6 +61,8 @@ void main(){
 
 
 
+
+
   vec3 fNorm = uvNormalMap( t_normal , vPos , vUv , vNorm , normalMapSize , normalMapDepth , vOffset );
 
   vec3 refl = normalize(reflect( eye , fNorm ));
@@ -65,6 +70,9 @@ void main(){
     //vec3 lightRefl = reflect( light )
 
   float match = max( 0. , dot( -refl , lightDir ));
+  vec2 semLU = semLookup( eye , fNorm );
+
+  vec4 sem = texture2D( t_sem , semLU );
 
   vec3 aCol = texture2D( t_audio , vec2( match , 0. ) ).xyz;
 
@@ -80,6 +88,7 @@ void main(){
   col = mix( col, (-fNorm * .5 + .5) , normalColorAmount);
   col = mix( col, (normalize(vVel) * .5 + .5) , velocityColorAmount);
 
+  col *= mix( vec3(1.) , sem.xyz * 2.4 , semAmount );
   col = mix( col, vec3( 1. ), brightness);
 
 
