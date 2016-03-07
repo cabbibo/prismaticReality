@@ -10,6 +10,7 @@ var MakePages = function(){
   cabbiboTexture = makeImageTexture(.3,  G.textures.cabbiboEnd );
   prismFlatLookup = makeImageTexture(.3,  G.textures.prismFlat );
   refractionFlatLookup = makeImageTexture(.3,  G.textures.refractionFlat );
+  prismColor = makeColorFromTextureImage( .3 , prismFlatLookup, G.textures.prismFlat );
 
   randomRotationAxis = makeNormalizedTexture();
   verticalRotationAxis = makeVerticalTexture();
@@ -109,6 +110,9 @@ var MakePages = function(){
 
     pageTurnTime                 : 1000,
 
+    movementSize: 1,
+    movementSpeed: .1,
+
     targetTexture                : sunTexture, //makeMeshTexture( new THREE.IcosahedronGeometry( .4 , 1 )  ),
     targetColorTexture           : makeRandomTexture( 1  ),
     target2Texture               : randomRotationAxis,
@@ -118,6 +122,8 @@ var MakePages = function(){
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:.1,
+                                    movementSize:1
                                    },
 
     targetRotationSimulationUniforms    : {
@@ -155,6 +161,8 @@ var MakePages = function(){
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:0,
+                                    movementSize:0
                                    },
 
     targetRotationSimulationUniforms    : {
@@ -192,10 +200,12 @@ var MakePages = function(){
 
     targetSimulationUniforms     : {
                                     toTargetForce: 0,
-                                    dampening: .9,
+                                    dampening: .95,
                                     dispersion: .01,
                                     curlNoiseSize : 3.,
                                     audioDisplacement: 0,
+                                    movementSpeed:.01,
+                                    movementSize:2
                                    },
 
     targetRotationSimulationUniforms    : {
@@ -239,6 +249,8 @@ var MakePages = function(){
                                     dispersion: .01,
                                     curlNoiseSize : 3.,
                                     audioDisplacement: 0,
+                                    movementSpeed:.0,
+                                    movementSize:0
                                    },
 
     targetRotationSimulationUniforms    : {
@@ -281,6 +293,8 @@ var MakePages = function(){
                                     dispersion: .00,
                                     curlNoiseSize : 3.,
                                     audioDisplacement: 0,
+                                    movementSpeed:0,
+                                    movementSize:0
                                    },
 
     targetRotationSimulationUniforms    : {
@@ -321,6 +335,8 @@ var MakePages = function(){
                                     dampening: .9,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:.01,
+                                    movementSize:.1
                                    },
 
     targetRotationSimulationUniforms    : {
@@ -350,7 +366,7 @@ var MakePages = function(){
     pageTurnTime                 : 1000,
 
     targetTexture                : prismFlatLookup,
-    targetColorTexture           : makeRandomTexture( 1  ),
+    targetColorTexture           : prismColor,
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
@@ -375,7 +391,8 @@ var MakePages = function(){
                                     normalMapDepth:10,
                                     normalMapSize:.4,
                                     reflectColorAmount:0,
-                                    normalColorAmount:1
+                                    normalColorAmount:0,
+                                    individualColorAmount:1
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0 , .2 ),
@@ -391,7 +408,7 @@ var MakePages = function(){
     pageTurnTime                 : 1000,
 
     targetTexture                : prismFlatLookup,
-    targetColorTexture           : makeRandomTexture( 1  ),
+    targetColorTexture           : prismColor,
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
@@ -399,6 +416,8 @@ var MakePages = function(){
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:1,
+                                    movementSize:.0
                                    },
 
     targetRotationSimulationUniforms : {
@@ -412,7 +431,9 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    individualColorAmount:0,
+                                    reflectColorAmount:1,
                                    },
 
     cameraPosition               : new THREE.Vector3( -.035 , 0.015 , .05 ),
@@ -436,6 +457,8 @@ var MakePages = function(){
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:1,
+                                    movementSize:.0
                                    },
 
     targetRotationSimulationUniforms : {
@@ -478,6 +501,8 @@ var MakePages = function(){
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:.1,
+                                    movementSize:.2
                                    },
 
     targetRotationSimulationUniforms : {
@@ -558,6 +583,8 @@ var MakePages = function(){
                                     dampening: .9,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:.2,
+                                    movementSize:.0
                                    },
 
     targetRotationSimulationUniforms : {
@@ -600,6 +627,8 @@ var MakePages = function(){
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:.1,
+                                    movementSize:6
                                    },
 
     targetRotationSimulationUniforms : {
@@ -613,7 +642,9 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    normalMapDepth:0,
+                                    reflectColorAmount:1,
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0.0 , 2.6 ),
@@ -637,6 +668,8 @@ var MakePages = function(){
                                     dampening: .95,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:.01,
+                                    movementSize:3
                                    },
 
     targetRotationSimulationUniforms : {
@@ -684,6 +717,8 @@ var MakePages = function(){
                                     audioRadius: .5,
                                     audioPower: .02,
                                     audioDisplacement: 0,
+                                    movementSpeed:.01,
+                                    movementSize:4
                                    },
 
     targetRotationSimulationUniforms : {
@@ -726,6 +761,8 @@ var MakePages = function(){
                                     dampening: .99,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    movementSpeed:.1,
+                                    movementSize:1
                                    },
 
     targetRotationSimulationUniforms : {
@@ -765,6 +802,8 @@ var MakePages = function(){
                                     audioRadius: .9,
                                     audioPower: .04,
                                     audioDisplacement: 0,
+                                    movementSpeed:.01,
+                                    movementSize:2
                                    },
 
     targetRotationSimulationUniforms : {
@@ -809,6 +848,8 @@ var MakePages = function(){
                                     audioDisplacement: 0,
                                     audioRadius: .5,
                                     audioPower: .01,
+                                    movementSpeed:.1,
+                                    movementSize:0
                                    },
 
     targetRotationSimulationUniforms : {

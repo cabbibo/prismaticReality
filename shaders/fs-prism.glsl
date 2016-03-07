@@ -70,17 +70,17 @@ void main(){
 
   vec3 col = vec3( 0. , 0. , 0. );
 
-  col += hsv( match , .5 , 1.) * matchHueAmount;
-  col += ( normalize(refl) * .5 + .5) * reflectColorAmount;
+  col = mix(col,hsv( match , .5 , 1.) , matchHueAmount);
+  col = mix( col , ( normalize(refl) * .5 + .5) , reflectColorAmount);
   col += aCol * audioColorAmount;
 
-  col += vAudio * individualAudioAmount;
-  col += vColor * individualColorAmount;
+  col +=  vAudio * individualAudioAmount;
+  col = mix( col, vColor , individualColorAmount);
 
-  col += (-fNorm * .5 + .5) * normalColorAmount;
-  col += (normalize(vVel) * .5 + .5) * velocityColorAmount;
+  col = mix( col, (-fNorm * .5 + .5) , normalColorAmount);
+  col = mix( col, (normalize(vVel) * .5 + .5) , velocityColorAmount);
 
-  col += vec3( brightness, brightness,brightness);
+  col = mix( col, vec3( 1. ), brightness);
 
 
   //col = vec3( vUv.x , vUv.y , 1. );

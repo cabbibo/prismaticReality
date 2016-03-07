@@ -1,17 +1,31 @@
-function Page(id , params ){
+function Page( id , params ){
 
   this.id = id;
   this.title = params.title;
   this.titleColor = params.titleColor;
-  
+
+  this.movementSpeed = params.movementSpeed;
+  if( params.movementSpeed == null ){ this.movementSpeed = 1;}
+
+  this.movementSize = params.movementSize;
+  if( params.movementSize == null ){ this.movementSize = 0;}
+
+
   this.pageTurnTime                 = params.pageTurnTime;
 
   this.targetTexture                = params.targetTexture;
   this.target2Texture               = params.target2Texture;
   this.targetColorTexture           = params.targetColorTexture;
-  this.targetSimulationUniforms     = params.targetSimulationUniforms;
+  
+  this.targetSimulationUniforms            = params.targetSimulationUniforms;
   this.targetRotationSimulationUniforms    = params.targetRotationSimulationUniforms;
-  this.targetRenderUniforms         = params.targetRenderUniforms;
+  this.targetRenderUniforms                = params.targetRenderUniforms;
+
+
+  //this.targetRenderUniforms             = this.fillUniforms( "targetRenderUniforms");
+  //this.targetSimulationUniforms         = this.fillUniforms( "targetSimulationUniforms");
+  //this.targetRotationSimulationUniforms = this.fillUniforms( "targetRotationSimulationUniforms");
+  
 
   this.cameraPosition               = params.cameraPosition.clone();
   this.cameraTarget                 = params.cameraTarget.clone();
@@ -35,6 +49,76 @@ Page.prototype.cloneUniforms = function(uniforms){
   }
 
   return u;
+
+}
+
+Page.prototype.fillUniforms = function( uniformType ){
+
+  if( pages.length != 0){
+    
+    var beforePage = pages[ pages.length - 1 ];
+    console.log( beforePage);
+
+    var u = {};
+
+    for( var propt in beforePage[uniformType] ){
+
+      
+
+
+      if( this[uniformType][propt] != null ){
+        if( this.title =="MORE" && propt == "curlNoiseSize" ){ console.log("YAYATNSKNDAFNASDKFASDN");}
+        u[propt] = this[uniformType][propt]
+      }else{
+        console.log("b4");
+        console.log( beforePage[uniformType][propt] );
+        console.log( propt );
+        u[propt] = beforePage[uniformType][propt];
+      }
+
+
+    }
+
+    return u;
+
+  }else{
+
+    var u = {};
+
+    var defaults;
+    if( uniformType == "targetSimulationUniforms"){
+      defaults = simulationUniforms;
+    }else if(uniformType == "targetRotationSimulationUniforms" ){
+      defaults = rotationSimUniforms;
+    }else if(uniformType == "targetRenderUniforms" ){
+      defaults = renderUniforms;
+    }
+
+    for( var propt in defaults ){
+
+
+
+      if( this[uniformType][propt] != null ){
+        console.log("YUP");
+        console.log( this[uniformType][propt] );
+        console.log( propt );
+        u[propt] = this[uniformType][propt]
+      }else{
+        if( propt != "time" && propt != "dT" && defaults[propt].type == "f" ){
+          u[propt] = defaults[propt].value;
+          console.log("nARP");
+          console.log( defaults[propt] );
+          console.log( propt );
+        }
+      }
+
+
+    }
+
+    return u;
+
+  }
+
 
 }
 

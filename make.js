@@ -18,6 +18,8 @@
     }
 
 
+
+
     function makeOpalTexture( numOpals , height,depth ){
  
       var data = new Float32Array( SIZE * SIZE  * 4 );
@@ -314,7 +316,6 @@
 
       return makeDataTexture( data );
 
-
     }
 
     function getImageData( image ) {
@@ -361,8 +362,42 @@
 
       return makeDataTexture( data );
 
+    }
 
-      var color = getPixel( imagedata , 10 , 10 );
+    function makeColorFromTextureImage(sizeOfObj, particles , texture){
+
+      var imagedata = getImageData( texture.image );
+      var particleData = particles.image.data
+
+      var width = texture.image.width;
+      var height = texture.image.height;
+
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+      
+      for( var i = 0; i < data.length; i += 4 ){
+
+        var pixelPosition = tryForPixel(imagedata, width, height , 0);
+
+        var x = Math.floor(((particleData[i+0] / sizeOfObj) + .5) * width);
+        var y = Math.floor((-(particleData[i+1] / sizeOfObj)+.5) * height);
+
+
+        var color = getPixel( imagedata , x , y );
+
+        //if( i < 1000 ){ console.log( color );}
+        data[ i + 0 ] = color.r/256; 
+        data[ i + 1 ] = color.g/256; 
+        data[ i + 2 ] = color.b/256; 
+
+        data[ i + 3 ] = color.a/256;
+
+
+      }
+
+      return makeDataTexture( data );
+
+
+      
     }
 
     function tryForPixel( imagedata, width, height , timesTried ){
@@ -372,7 +407,7 @@
       var w = Math.floor( width * x);
       var h = Math.floor( height * y);
       var color = getPixel( imagedata , w , h );
-      var l = color.r + color.g + color.b;
+      var l = Math.max(Math.max( color.r , color.g), color.b) * 3;
 
       if( l > 10 ){ 
         return { x:x-.5 , y:.5-y , l:l }

@@ -77,6 +77,15 @@ var tv2 = new THREE.Vector3();
 
   };
 
+mouseVal = {
+  x:0,
+  y:0,
+}
+
+tMouseVal = {
+  x:0,
+  y:0,
+}
 
 </script>
 
@@ -139,7 +148,10 @@ var tv2 = new THREE.Vector3();
     t_target2 :T_TARGET2,
     t_targetCol:T_TARGETCOL,
     t_audio:T_AUDIO,
-    repelers:REPELERS
+    repelers:REPELERS,
+
+    movementSpeed:{type:"f",value:0},
+    movementSize:{type:"f",value:0},
 
   }
 
@@ -163,6 +175,7 @@ var tv2 = new THREE.Vector3();
     t_pos:{ type:"t" , value: null },
     t_oPos:{ type:"t" , value: null },
     t_rot:{ type:"t" , value: null },
+    
     audioValue: { type:"f", value: 0},
     rainbowValue: { type:"f", value: 0},
     colorValue: { type:"f", value: 0},
@@ -369,6 +382,7 @@ var tv2 = new THREE.Vector3();
       
     window.addEventListener( 'keydown', keydown, false );
     window.addEventListener( 'keyup', keyup, false );
+    window.addEventListener( 'mousemove', mousemove, false );
   }
 
   function animate(){
@@ -387,10 +401,17 @@ var tv2 = new THREE.Vector3();
 
     tv1.copy( camera.position );
 
-    tv2.set( Math.sin( .1 * simulationUniforms.time.value  ) * .01, 0 , .1 * Math.sin( simulationUniforms.time.value  ) * .01 );
+    var mSize = simulationUniforms.movementSize.value;
+    var mSpeed = simulationUniforms.movementSpeed.value;
+    //console.log( cp.movementSi);
+
+    mouseVal.x = (( tMouseVal.x * mSize - mouseVal.x ) * mSpeed ) + mouseVal.x;
+    mouseVal.y = (( tMouseVal.y * mSize - mouseVal.y ) * mSpeed ) + mouseVal.y;
+
+    tv2.set( mouseVal.x , mouseVal.y ,0 );
     
     // osscilate camera a lil bit
-    //camera.position.add( tv2);
+    camera.position.add( tv2);
     
 
     camera.lookAt( target );
@@ -434,6 +455,13 @@ var tv2 = new THREE.Vector3();
       turnPage(); 
     }
     if( e.code == "ArrowLeft" ){ turnPageBack(); }
+  }
+
+  function mousemove( e ){
+
+    tMouseVal.x = (e.clientX / window.innerWidth) - .5;
+    tMouseVal.y = (e.clientY / window.innerHeight) - .5;
+    //console.log( e );
   }
 
 
