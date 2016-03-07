@@ -18,13 +18,13 @@
     }
 
 
-    function makeOpalTexture( numOpals ){
+    function makeOpalTexture( numOpals , height,depth ){
  
       var data = new Float32Array( SIZE * SIZE  * 4 );
 
       var numPerOpal = Math.floor(  SIZE * SIZE / numOpals );
-      var opalWidth = 10;
-      var opalHeight = 20;
+      var opalWidth = height;
+      var opalHeight = depth;
       var opalDepth = Math.floor( numPerOpal / ( opalWidth * opalHeight ));
       console.log( "OPAS");
       console.log( opalDepth );
@@ -67,13 +67,13 @@
 
     }
 
-     function makeOpalRotationTexture( numOpals ){
+     function makeOpalRotationTexture( numOpals , height , depth){
  
       var data = new Float32Array( SIZE * SIZE  * 4 );
 
       var numPerOpal = Math.floor(  SIZE * SIZE / numOpals );
-      var opalWidth = 10;
-      var opalHeight = 20;
+      var opalWidth = height;
+      var opalHeight = depth;
       var opalDepth = Math.floor( numPerOpal / ( opalWidth * opalHeight ));
       console.log( "OPAS");
       console.log( opalDepth );
@@ -126,8 +126,15 @@
         z.crossVectors( x , tv1 ).normalize();
         y.crossVectors( x , z ).normalize();
 
-        start.set(random( opalID )-.5 , random( opalID* 2)-.5 , random(opalID * 4)-.5);
-        size = random( opalID * 14525 ) * .03 + .001;
+
+
+        start.set(random( opalID *135)-.5 , random( opalID* 22)-.5 , random(opalID * 412)-.5);
+        start.normalize();
+        var r = random( opalID *1961);
+        start.multiplyScalar(random( opalID *1961));
+        tv1.set(.5,1.2,.3);
+        start.multiply( tv1 );
+        size = (r) * .03 + .005;
 
 
       }else{

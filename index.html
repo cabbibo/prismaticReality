@@ -148,6 +148,9 @@ var tv2 = new THREE.Vector3();
     time: simulationUniforms.time,
     toTargetAxis:{ type:"f", value:0},
     toTargetAngle:{ type:"f", value:0},
+    toVelocity:{ type:"f", value:0},
+    t_fromSim1:{ type:"t" , value: null },
+    t_fromSim2:{ type:"t" , value: null },
     t_target :T_TARGET,
     t_target2 :T_TARGET2,
     t_audio:T_AUDIO,
@@ -171,6 +174,19 @@ var tv2 = new THREE.Vector3();
     simulationSize:{type:"f",value:1},
     targetSize:{type:"f",value:0},
     audioSize:{type:"f",value:0},
+
+
+    velocityColorAmount : {type:"f",value:0},
+    audioColorAmount : {type:"f",value:0},
+    reflectColorAmount : {type:"f",value:0},
+    normalColorAmount : {type:"f",value:0},
+    individualColorAmount : {type:"f",value:0},
+    individualAudioAmount : {type:"f",value:0},
+    matchHueAmount : {type:"f",value:0},
+
+    normalMapSize : {type:"f",value:.1},
+    normalMapDepth : {type:"f",value:1},
+
 
 
 
@@ -328,6 +344,9 @@ var tv2 = new THREE.Vector3();
 
       simulation.addBoundTexture( renderUniforms.t_pos , 'output' );
       simulation.addBoundTexture( renderUniforms.t_oPos , 'oOutput' );
+      
+      simulation.addBoundTexture( rotationSimUniforms.t_fromSim1 , 'output' );
+      simulation.addBoundTexture( rotationSimUniforms.t_fromSim2 , 'oOutput' );
 
       rotationSim.addBoundTexture( renderUniforms.t_rot , 'output' );
 

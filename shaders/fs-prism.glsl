@@ -4,6 +4,20 @@ uniform vec3 lightPos;
 
 uniform float brightness;
 
+uniform float velocityColorAmount;
+uniform float audioColorAmount;
+uniform float reflectColorAmount;
+uniform float normalColorAmount;
+uniform float individualColorAmount;
+uniform float individualAudioAmount;
+uniform float matchHueAmount;
+
+uniform float normalMapSize;
+uniform float normalMapDepth;
+
+
+
+
 varying vec3 vPos;
 varying float vDist;
 
@@ -44,24 +58,31 @@ void main(){
 
 
 
-  vec3 fNorm = uvNormalMap( t_normal , vPos , vUv , vNorm , .1 , 10. , vOffset );
+  vec3 fNorm = uvNormalMap( t_normal , vPos , vUv , vNorm , normalMapSize , normalMapDepth , vOffset );
 
-  vec3 refl = reflect( eye , fNorm );
+  vec3 refl = normalize(reflect( eye , fNorm ));
 
     //vec3 lightRefl = reflect( light )
 
-  float match = max( 0., dot( -refl , lightDir ));
+  float match = max( 0. , dot( -refl , lightDir ));
 
-  vec3 aCol = texture2D( t_audio , vec2( match , 0.) ).xyz;
+  vec3 aCol = texture2D( t_audio , vec2( match , 0. ) ).xyz;
 
-  vec3 col =  hsv( match , .5 , 1.);
-  col = ( normalize(refl) * .5 + .5) * match * match;// + (fNorm * .5 + .5);
+  vec3 col = vec3( 0. , 0. , 0. );
 
-  col += aCol ;
+  col += hsv( match , .5 , 1.) * matchHueAmount;
+  col += ( normalize(refl) * .5 + .5) * reflectColorAmount;
+  col += aCol * audioColorAmount;
+
+  col += vAudio * individualAudioAmount;
+  col += vColor * individualColorAmount;
+
+  col += (-fNorm * .5 + .5) * normalColorAmount;
+  col += (normalize(vVel) * .5 + .5) * velocityColorAmount;
 
   col += vec3( brightness, brightness,brightness);
 
-  col = -vNorm * .5 + .5;
+
   //col = vec3( vUv.x , vUv.y , 1. );
 
   //col = texture2D( t_normal , vUv * 2.0 ).xyz;

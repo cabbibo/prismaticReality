@@ -2,6 +2,7 @@ function Page(id , params ){
 
   this.id = id;
   this.title = params.title;
+  this.titleColor = params.titleColor;
   
   this.pageTurnTime                 = params.pageTurnTime;
 
@@ -133,9 +134,18 @@ Page.prototype.start = function(){
 
 Page.prototype.onComplete = function(){
 
+  if( this.title ){
+
+
+  var color = "#fff"
+  if( this.titleColor ) color = this.titleColor;
+
   var string = (this.id + 1) + ". " + this.title;
 
   title.innerHTML = string;
+  title.style.color = color;
+
+  }
 
 
 }

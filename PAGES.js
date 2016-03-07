@@ -18,8 +18,8 @@ var MakePages = function(){
   multitudeTexture = makeMeshNoiseTexture( new THREE.IcosahedronGeometry( .4 , 4 ) , .004 , 3. , .04);
   emergenceRotationAxis = makeNoiseRotationTexture(multitudeTexture);
 
-  opalTexture = makeOpalTexture(200);
-  opalRotationTexture = makeOpalRotationTexture(200);
+  opalTexture = makeOpalTexture(300 , 3 , 6 );
+  opalRotationTexture = makeOpalRotationTexture(300, 3 , 6);
   
 
   //emergenceTexture = makeNoiseMeshTexture( new THREE.IcosahedronGeometry( .4 , 4 ) , .004 , .0);
@@ -56,7 +56,8 @@ var MakePages = function(){
                                     audioValue: 0,
                                     colorValue: 1,
                                     rainbowValue: 0,
-                                    brightness:0
+                                    brightness:0,
+                                    reflectColorAmount:1,
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0 , 0.02 ),
@@ -68,6 +69,7 @@ var MakePages = function(){
   {
 
     title                        : "SUN",
+    titleColor                   : "#000",
 
     pageTurnTime                 : 1000,
 
@@ -131,7 +133,7 @@ var MakePages = function(){
                                     brightness:.7
                                    },
 
-    cameraPosition               : new THREE.Vector3( .1 , 0 , 0.06 ),
+    cameraPosition               : new THREE.Vector3( .1 , 0 , 0.6 ),
     cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
 
 
@@ -168,7 +170,7 @@ var MakePages = function(){
                                     brightness:1.
                                    },
 
-    cameraPosition               : new THREE.Vector3( 1 , 0 , .3 ),
+    cameraPosition               : new THREE.Vector3( 1 , 0 , 3.3 ),
     cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
 
 
@@ -197,6 +199,91 @@ var MakePages = function(){
                                    },
 
     targetRotationSimulationUniforms    : {
+                                    speed: 0.,
+                                    toTargetAxis:0,
+                                    toTargetAngle:1,
+                                    toVelocity:1
+                                   },
+
+    targetRenderUniforms         : {
+                                    audioValue: 0,
+                                    colorValue: 1,
+                                    rainbowValue: 0,
+                                    normalColorAmount:0,
+                                    reflectColorAmount:.5,
+                                    velocityColorAmount:.5,
+                                    normalMapSize:.1,
+                                    normalMapDepth:0,
+                                    brightness:0
+                                   },
+
+    cameraPosition               : new THREE.Vector3( .7 , 0 , .3 ),
+    cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
+
+
+  }, 
+
+    {
+
+    title                        : "CAN'T",
+
+    pageTurnTime                 : 1000,
+
+    targetTexture                : sunTexture,
+    targetColorTexture           : makeRandomTexture( 1  ),
+    target2Texture               : randomRotationAxis,
+
+    targetSimulationUniforms     : {
+                                    toTargetForce: 0,
+                                    dampening: .9,
+                                    dispersion: .01,
+                                    curlNoiseSize : 3.,
+                                    audioDisplacement: 0,
+                                   },
+
+    targetRotationSimulationUniforms    : {
+                                    speed: 1.,
+                                    toTargetAxis:1,
+                                    toTargetAngle:0,
+                                    toVelocity:0,
+                                   },
+
+    targetRenderUniforms         : {
+                                    audioValue: 0,
+                                    colorValue: 1,
+                                    rainbowValue: 0,
+                                    brightness:0,
+                                    baseSize:0,
+                                    simulationSize:0,
+                                    audioSize:0,
+                                    targetSize:0,
+                                   },
+
+    cameraPosition               : new THREE.Vector3( .0 , 0 , 4.3 ),
+    cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
+
+
+  }, 
+
+    {
+
+    title                        : "YEARN",
+
+    pageTurnTime                 : 1000,
+
+    targetTexture                : firstLookup,
+    targetColorTexture           : makeRandomTexture( 1  ),
+    target2Texture               : randomRotationAxis,
+
+    targetSimulationUniforms     : {
+                                    toTargetForce: 100,
+                                    dampening: .1,
+                                    dispersion: .00,
+                                    curlNoiseSize : 3.,
+                                    audioDisplacement: 0,
+                                   },
+
+    targetRotationSimulationUniforms    : {
                                     speed: 1.,
                                     toTargetAxis:1,
                                     toTargetAngle:0,
@@ -206,10 +293,14 @@ var MakePages = function(){
                                     audioValue: 0,
                                     colorValue: 1,
                                     rainbowValue: 0,
-                                    brightness:0
+                                    brightness:0,
+                                    baseSize:0,
+                                    simulationSize:.1,
+                                    audioSize:0,
+                                    targetSize:0,
                                    },
 
-    cameraPosition               : new THREE.Vector3( .7 , 0 , .3 ),
+    cameraPosition               : new THREE.Vector3( 0 , 0 , .3 ),
     cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
 
 
@@ -226,8 +317,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
-                                    dampening: .6,
+                                    toTargetForce: 1,
+                                    dampening: .9,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -242,7 +333,8 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    simulationSize:1,
                                    },
 
     cameraPosition               : new THREE.Vector3( .1 , 0 , .2 ),
@@ -262,8 +354,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
-                                    dampening: .6,
+                                    toTargetForce: 5,
+                                    dampening: .8,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -279,7 +371,11 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    normalMapDepth:10,
+                                    normalMapSize:.4,
+                                    reflectColorAmount:0,
+                                    normalColorAmount:1
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0 , .2 ),
@@ -294,12 +390,12 @@ var MakePages = function(){
 
     pageTurnTime                 : 1000,
 
-    targetTexture                : refractionFlatLookup,
+    targetTexture                : prismFlatLookup,
     targetColorTexture           : makeRandomTexture( 1  ),
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
+                                    toTargetForce: 1,
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
@@ -319,8 +415,8 @@ var MakePages = function(){
                                     rainbowValue: 0
                                    },
 
-    cameraPosition               : new THREE.Vector3( 0 , 0 , .5 ),
-    cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
+    cameraPosition               : new THREE.Vector3( -.035 , 0.015 , .05 ),
+    cameraTarget                 : new THREE.Vector3( -.035 , 0.015 , 0 ),
 
 
   }, 
@@ -336,7 +432,7 @@ var MakePages = function(){
     target2Texture               : verticalRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
+                                    toTargetForce: 1,
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
@@ -353,7 +449,12 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    reflectColorAmount:0,
+                                    normalColorAmount:0,
+                                    normalMapDepth:0,
+                                    velocityColorAmount:0,
+                                    audioColorAmount:1
                                    },
 
     cameraPosition               : new THREE.Vector3( -.035 , 0.015 , .005 ),
@@ -373,7 +474,7 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
+                                    toTargetForce: 10,
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
@@ -392,7 +493,9 @@ var MakePages = function(){
                                     colorValue: 1,
                                     rainbowValue: 0,
                                     baseSize: .004,
-                                    simulationSize:0
+                                    simulationSize:0,
+                                    reflectColorAmount:1,
+                                    audioColorAmount:1
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0.0 , .3 ),
@@ -412,7 +515,7 @@ var MakePages = function(){
     target2Texture               : emergenceRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
+                                    toTargetForce: 5,
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
@@ -451,8 +554,8 @@ var MakePages = function(){
     target2Texture               : opalRotationTexture,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
-                                    dampening: .6,
+                                    toTargetForce: 50,
+                                    dampening: .9,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -468,11 +571,16 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    audioColorAmount:0,
+                                    reflectColorAmount:1,
+                                    normalMapSize:.01,
+                                    normalMapDepth:1,
+                                    matchHueAmount:0
                                    },
 
-    cameraPosition               : new THREE.Vector3( 0 , 0.0 , .1 ),
-    cameraTarget                 : new THREE.Vector3( 0 , 0.0 , 0 ),
+    cameraPosition               : new THREE.Vector3( 0.06 , 0.03 , .1 ),
+    cameraTarget                 : new THREE.Vector3( 0.06, 0.03 , 0 ),
 
 
   }, 
@@ -488,7 +596,7 @@ var MakePages = function(){
     target2Texture               : opalRotationTexture,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
+                                    toTargetForce: 1,
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
@@ -525,8 +633,8 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
-                                    dampening: .6,
+                                    toTargetForce: .1,
+                                    dampening: .95,
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                    },
@@ -542,7 +650,13 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    normalColorAmount:.9,
+                                    audioColorAmount:.5,
+                                    reflectColorAmount:0,
+                                    normalMapSize:.01,
+                                    normalMapDepth:2,
+                                    matchHueAmount:0
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0.0 , 1.6 ),
@@ -582,7 +696,9 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    velocityColorAmount:1,
+                                    normalColorAmount:0,
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0.0 , 2 ),
@@ -645,6 +761,8 @@ var MakePages = function(){
                                     toTargetForce: 1,
                                     dampening: .8,
                                     dispersion: .01,
+                                    audioRadius: .9,
+                                    audioPower: .04,
                                     audioDisplacement: 0,
                                    },
 
@@ -684,16 +802,18 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
-                                    dampening: .6,
+                                    toTargetForce: 10,
+                                    dampening: .9,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                    audioRadius: .5,
+                                    audioPower: .002,
                                    },
 
     targetRotationSimulationUniforms : {
-                                      speed: 1.2,
+                                      speed: .2,
                                       toTargetAxis:1,
-                                      toTargetAngle:0,
+                                      toTargetAngle:0.8,
                                  
                                    
                                       },
@@ -706,6 +826,9 @@ var MakePages = function(){
                                     baseSize:0,
                                     audioDisplacement:.01,
                                     rainbowValue: 0,
+                                    audioColorAmount:.5,
+                                    reflectColorAmount:1,
+                                    velocityColorAmount:0
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0.0 , .2 ),

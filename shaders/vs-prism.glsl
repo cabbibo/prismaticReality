@@ -5,6 +5,7 @@ attribute float id;
 uniform sampler2D t_pos;
 uniform sampler2D t_oPos;
 uniform sampler2D t_target;
+uniform sampler2D t_targetCol;
 uniform sampler2D t_rot;
 uniform sampler2D t_col;
 uniform sampler2D t_audio;
@@ -61,8 +62,7 @@ void main(){
   vec3 vDif = pos.xyz - target.xyz;
   vVel = pos.xyz - oPos.xyz;
 
-  vColor = normalize( vVel ) * .5 + .5;
-  vColor = normalize(vDif) * .5 + .5;// * 1000.;
+  vColor = texture2D(t_targetCol, position.xy).xyz;
   vAudio = texture2D( t_audio , vec2( id / 1000000. , 0.)).xyz;
 
   vUv = uv;

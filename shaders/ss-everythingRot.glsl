@@ -1,6 +1,9 @@
 uniform sampler2D t_oPos;
 uniform sampler2D t_pos;
 
+uniform sampler2D t_fromSim1;
+uniform sampler2D t_fromSim2;
+
 
 // use alpha as size
 uniform sampler2D t_target;
@@ -10,6 +13,7 @@ uniform float audioRepeller;
 uniform float speed;
 uniform float toTargetAxis;
 uniform float toTargetAngle;
+uniform float toVelocity;
 //uniform float randVal;
 
 const float randVal = 1.;
@@ -28,6 +32,12 @@ void main(){
   vec4 oPos = texture2D( t_oPos , uv );
   vec4 pos  = texture2D( t_pos  , uv );
 
+  vec4 simPos = texture2D( t_fromSim1 , uv );
+  vec4 oSimPos = texture2D( t_fromSim2 , uv );
+
+  vec3 simVel = simPos.xyz - oSimPos.xyz;
+
+
   vec4 toRot = texture2D( t_target2 , uv );
 
   vec3 p = pos.xyz;
@@ -43,9 +53,9 @@ void main(){
   vec3 axis = vec3( pos.xyz );
   axis = normalize( axis );
 
-  axis = mix( pos.xyz , toRot.xyz , toTargetAxis );
+  axis = mix( axis.xyz , toRot.xyz , toTargetAxis );
 
-
+  axis = mix( axis , normalize( simVel ) , toVelocity);
 
 
   float angle = pos.w + rR * dT * speed;

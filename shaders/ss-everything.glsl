@@ -83,6 +83,15 @@ void main(){
     }
   }
 
+
+
+  if( length( force ) >= 10.0 ){
+    force = normalize( force )* 10.;
+  }
+
+  if( length( vel ) >= 10.0 ){
+    vel = normalize( vel )* 10.;
+  }
   vel *= dampening;
   vel += force * dT;
 
