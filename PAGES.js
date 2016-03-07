@@ -7,7 +7,7 @@ var MakePages = function(){
   firstLookup = makeSingleTexture( 1 , 0 );
   secondLookup = makeSingleTexture( 1 , 0.001 );
 
-  testLookup = makeImageTexture(.3,  G.textures.mystery );
+  cabbiboTexture = makeImageTexture(.3,  G.textures.cabbiboEnd );
   prismFlatLookup = makeImageTexture(.3,  G.textures.prismFlat );
   refractionFlatLookup = makeImageTexture(.3,  G.textures.refractionFlat );
 
@@ -642,9 +642,9 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 100,
-                                    dampening: .6,
-                                    dispersion: 0,
+                                    toTargetForce: 1,
+                                    dampening: .8,
+                                    dispersion: .01,
                                     audioDisplacement: 0,
                                    },
 
@@ -659,10 +659,14 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    rainbowValue: 0,
+                                    audioSize: .01,
+                                    simulationSize: 0,
+                                    baseSize:.001,
+                                    audioDisplacement: .01,
                                    },
 
-    cameraPosition               : new THREE.Vector3( 0 , 0.0 , 5.3 ),
+    cameraPosition               : new THREE.Vector3( 0 , 0.0 , 1.0 ),
     cameraTarget                 : new THREE.Vector3( 0 , 0.0 , 0 ),
 
 
@@ -671,11 +675,11 @@ var MakePages = function(){
 
   {
 
-    title                        : "THANK YOU!",
+    title                        : "",
 
     pageTurnTime                 : 1000,
 
-    targetTexture                : multitudeTexture,
+    targetTexture                : cabbiboTexture,
     targetColorTexture           : makeRandomTexture( 1  ),
     target2Texture               : randomRotationAxis,
 
@@ -697,10 +701,14 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    rainbowValue: 0
+                                    simulationSize: 1,
+                                    audioSize:0,
+                                    baseSize:0,
+                                    audioDisplacement:.01,
+                                    rainbowValue: 0,
                                    },
 
-    cameraPosition               : new THREE.Vector3( 0 , 0.0 , 5.3 ),
+    cameraPosition               : new THREE.Vector3( 0 , 0.0 , .2 ),
     cameraTarget                 : new THREE.Vector3( 0 , 0.0 , 0 ),
 
 

@@ -49,6 +49,7 @@ function loadImages(){
   G.textures.prismFlat   = loadImage('img/prismFlat.jpg' );
   G.textures.refractionFlat   = loadImage('img/refraction.png' );
   G.textures.normal = loadImage( 'img/normals/ice-snow.jpg' );
+  G.textures.cabbiboEnd = loadImage( 'img/cabbiboEnd.png' );
   //G.textures.normal = loadImage( 'img/normals/carbonFiber.png' );
 
 }
