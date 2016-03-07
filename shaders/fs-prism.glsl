@@ -61,7 +61,7 @@ void main(){
 
   col += vec3( brightness, brightness,brightness);
 
-  col = vColor;
+  col = -vNorm * .5 + .5;
   //col = vec3( vUv.x , vUv.y , 1. );
 
   //col = texture2D( t_normal , vUv * 2.0 ).xyz;

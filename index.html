@@ -51,7 +51,7 @@
 <script src="lib/TrackballControls.js"></script>
 <script src="lib/ShaderLoader.js"></script>
 <script src="lib/Tween.js"></script>
-<script src="lib.noise.js"></script>
+<script src="lib/noise.js"></script>
 
 <script src="lib/AudioController.js"></script>
 <script src="lib/UserAudio.js"></script>
@@ -167,6 +167,11 @@ var tv2 = new THREE.Vector3();
 
     biggerFartherAddition:{type:"f",value:0},
     audioDisplacement:{type:"f",value:0},
+    baseSize:{type:"f",value:0},
+    simulationSize:{type:"f",value:1},
+    targetSize:{type:"f",value:0},
+    audioSize:{type:"f",value:0},
+
 
 
     t_target : T_TARGET,
@@ -221,7 +226,7 @@ var tv2 = new THREE.Vector3();
 
       var ar = window.innerWidth / window.innerHeight;
 
-      camera = new THREE.PerspectiveCamera( 50, ar , .0001, 10 );
+      camera = new THREE.PerspectiveCamera( 50, ar , .001, 10 );
       camera.position.z = .025;
 
     
@@ -262,7 +267,7 @@ var tv2 = new THREE.Vector3();
       light.position.y = .1;
       light.position.z = -.1;
       renderUniforms.lightPos.value = light.position;
-      scene.add( light );
+      //scene.add( light );
 
 
 
@@ -279,7 +284,7 @@ var tv2 = new THREE.Vector3();
 
         REPELERS.value.push( r.position );
 
-        scene.add( r );
+        //scene.add( r );
         repelers.push(r);
       }
 
@@ -361,10 +366,19 @@ var tv2 = new THREE.Vector3();
     controls.update();
     audio.update();
 
+    tv1.copy( camera.position );
+
+    tv2.set( Math.sin( .1 * simulationUniforms.time.value  ) * .01, 0 , .1 * Math.sin( simulationUniforms.time.value  ) * .01 );
+    
+    // osscilate camera a lil bit
+    //camera.position.add( tv2);
+    
+
     camera.lookAt( target );
     
     renderer.render( scene , camera );
     stats.update();
+    camera.position.copy( tv1 );
 
 
 

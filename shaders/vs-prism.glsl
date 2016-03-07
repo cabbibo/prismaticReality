@@ -12,6 +12,10 @@ uniform sampler2D t_audio;
 uniform float biggerFartherAddition;
 uniform float audioDisplacement;
 
+uniform float simulationSize;
+uniform float baseSize;
+uniform float targetSize;
+uniform float audioSize;
 
 varying vec3 vNorm;
 varying vec3 vCol;
@@ -69,8 +73,12 @@ void main(){
 
 
 
-  float size = pos.a;
-  size *= ( 1. + length(vDif) + biggerFartherAddition );
+  float size = baseSize;
+  size += pos.a * simulationSize;
+  size += target.a * targetSize;
+  size += length( vAudio ) * audioSize;
+  size += (length(vDif) * biggerFartherAddition );
+
 
   if( size > 0.0001 ){
 

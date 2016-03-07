@@ -22,19 +22,158 @@
  
       var data = new Float32Array( SIZE * SIZE  * 4 );
 
+      var numPerOpal = Math.floor(  SIZE * SIZE / numOpals );
+      var opalWidth = 10;
+      var opalHeight = 20;
+      var opalDepth = Math.floor( numPerOpal / ( opalWidth * opalHeight ));
+      console.log( "OPAS");
+      console.log( opalDepth );
+
       for( var i =0; i < data.length; i+=4 ){
 
         var index = Math.floor( i / 4 );
-        var opalIndex = Math.floor( index / numOpals );
-        var indexInOpal = index - opalIndex * SIZE * SIZE / numOpals;
+        var opalIndex = Math.floor( index / numPerOpal );
+        var indexInOpal = index - opalIndex * numPerOpal;
+
+        var z = Math.floor( indexInOpal / (opalHeight * opalWidth) );
+        var indexInSlice = indexInOpal - z * ( opalHeight * opalWidth );
+
+        var y = Math.floor( indexInSlice / opalHeight );
+        var indexInRow = indexInSlice - y * opalHeight;
+        var x = indexInRow;
+
+
+        //var x = 
+
+        var opalAxis = getOpalAxis( opalIndex );
+
+        tv1.copy( opalAxis.start );
+        tv1.add( opalAxis.x.multiplyScalar( x * opalAxis.size ) );
+        tv1.add( opalAxis.y.multiplyScalar( y * opalAxis.size ) );
+        tv1.add( opalAxis.z.multiplyScalar( z * opalAxis.size ) );
 
 
 
-        data[i] = (Math.random() - .5 ) * sizeRand;
+        data[i+0] = tv1.x;
+        data[i+1] = tv1.y;
+        data[i+2] = tv1.z;
+        data[i+3] = opalAxis.size;//(Math.random() - .5 );
   
-        if( i % 4 == 4 ){
-          data[i] = 0;
-        }
+ 
+
+      }
+
+      return makeDataTexture( data );
+
+    }
+
+     function makeOpalRotationTexture( numOpals ){
+ 
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+
+      var numPerOpal = Math.floor(  SIZE * SIZE / numOpals );
+      var opalWidth = 10;
+      var opalHeight = 20;
+      var opalDepth = Math.floor( numPerOpal / ( opalWidth * opalHeight ));
+      console.log( "OPAS");
+      console.log( opalDepth );
+
+      for( var i =0; i < data.length; i+=4 ){
+
+        var index = Math.floor( i / 4 );
+        var opalIndex = Math.floor( index / numPerOpal );
+        var indexInOpal = index - opalIndex * numPerOpal;
+
+
+
+        //var x = 
+
+        var opalAxis = getOpalAxis( opalIndex );
+
+
+
+        data[i+0] = opalAxis.y.x;
+        data[i+1] = opalAxis.y.y;
+        data[i+2] = opalAxis.y.z;
+        data[i+3] = 1;//(Math.random() - .5 );
+  
+ 
+
+      }
+
+      return makeDataTexture( data );
+
+    }
+
+    function getOpalAxis( opalID ){
+
+      // could get grid size to make spacing dynamic?
+
+   
+      var x = new THREE.Vector3();
+      var y = new THREE.Vector3();
+      var z = new THREE.Vector3();
+      var start = new THREE.Vector3();
+      var size = .01;
+
+      if( opalID != 0 ){
+
+        x.set(random( opalID * 2000)-.5 , random( opalID* 2)-.5 , random(opalID * 4)-.5);
+        x.normalize();
+
+        tv1.set( random( opalID * 20)-.5 , random( opalID* 200)-.5 , random(opalID * 400)-.5);
+
+        z.crossVectors( x , tv1 ).normalize();
+        y.crossVectors( x , z ).normalize();
+
+        start.set(random( opalID )-.5 , random( opalID* 2)-.5 , random(opalID * 4)-.5);
+        size = random( opalID * 14525 ) * .03 + .001;
+
+
+      }else{
+
+        x.set( 1 , 0 , 0 );
+        y.set( 0 , 1 , 0 );
+        z.set( 0 , 0 , 1 );
+        start.set( 0 , 0 , 0);
+
+      }
+
+      return{
+        x: x,
+        y: y,
+        z: z,
+        start: start,
+        size: size
+
+      }
+    }
+
+    function makeNoiseRotationTexture(texture){
+ 
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+      var tData = texture.image.data;
+
+      for( var i =0; i < data.length; i+=4 ){
+
+        //console.log( tData[ i+0] );
+        tv1.set(
+            sNoise.noise3D( tData[ i + 0 ] , tData[ i + 1 ] , tData[ i + 2 ] ),
+            sNoise.noise3D( tData[ i + 0 ] * 5 , tData[ i + 1 ] * 5 , tData[ i + 2 ] * 5),
+            sNoise.noise3D( tData[ i + 0 ] * 50 , tData[ i + 1 ]  * 50, tData[ i + 2 ] * 50 )
+          );
+
+        tv1.normalize();
+
+        data[i + 0] = tv1.x;
+        data[i + 1] = tv1.y;
+        data[i + 2] = tv1.z;
+
+        //console.log( tv1 );
+        //data[i] = (Math.random() - .5 );
+  
+        data[i+3] = 1.;//Math.random();
+      
 
 
       }
@@ -272,6 +411,35 @@
 
     }
 
+    function makeMeshNoiseTexture( geometry , triSize, noiseSize, noiseVal ){
+  
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+      
+      for( var i = 0; i < data.length; i += 4 ){
+
+        var randomFace = geometry.faces[ Math.floor( Math.random() * geometry.faces.length)];
+
+        v1 = geometry.vertices[ randomFace.a ];
+        v2 = geometry.vertices[ randomFace.b ];
+        v3 = geometry.vertices[ randomFace.c ];
+        
+
+        var f = randomPositionInTriangle( v1 , v2 , v3 );
+        data[ i + 0 ] = f.x; 
+        data[ i + 1 ] = f.y; 
+        data[ i + 2 ] = f.z; 
+
+        //console.log( f.x );
+        f.multiplyScalar( noiseSize );
+
+        data[ i + 3 ] = triSize + noiseVal * Math.abs(sNoise.noise3D( f.x , f.y , f.z ));
+
+      }
+
+      return makeDataTexture( data );
+
+    }
+
     function randomPositionInTriangle( v1 , v2 , v3 ){
 
       fVec = new THREE.Vector3();
@@ -325,6 +493,8 @@
     }
 
     function random( seed ) {
-      var x = Math.sin(seed++) * 10000;
-      return x - Math.floor(x);
+
+      return ('0.'+Math.sin(seed).toString().substr(6))
+      // var x = Math.sin(seed++) * 10000;
+      //return x - Math.floor(x);
     }
