@@ -88,7 +88,7 @@ void main(){
 
 
   pos.xyz += (rot * vec4( (triPos * size ) , 1. )).xyz;
-  pos.xyz += vNorm * audioDisplacement * length( vAudio );
+  pos.xyz += vNorm * audioDisplacement * size * length( vAudio );
 
 
   vec3 dif = cameraPosition - pos.xyz;

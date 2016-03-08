@@ -152,7 +152,7 @@ Page.prototype.start = function(){
   }.bind( this ));
 
   tween.onComplete( function(){
-    //camera.position.copy( this.cameraPosition );
+    camera.position.copy( this.cameraPosition );
   }.bind( this ) );
 
   tween.start();
@@ -165,7 +165,7 @@ Page.prototype.start = function(){
   }.bind( this ));
 
   tween.onComplete( function(){
-   // target.copy( this.cameraTarget );
+    target.copy( this.cameraTarget );
   }.bind( this ) );
 
   tween.start();

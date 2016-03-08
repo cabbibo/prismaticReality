@@ -44,7 +44,7 @@
 <body style="margin:0px">
 <div id="title"></div>
 
-<script src="lib/three.js"></script>
+<script src="lib/three.min.js"></script>
 <script src="lib/jquery.min.js"></script>
 <script src="lib/stats.min.js"></script>
 <script src="lib/underscore.js"></script>
@@ -59,7 +59,7 @@
 
 <script>
 
-var SIZE = 128;
+var SIZE = 256;
 var pages = [];
 
 var tv1 = new THREE.Vector3();
@@ -86,6 +86,10 @@ tMouseVal = {
   x:0,
   y:0,
 }
+
+var mouse = new THREE.Vector2();
+var raycaster = new THREE.Raycaster();
+var cameraTemp  = new THREE.Vector3();
 
 </script>
 
@@ -149,6 +153,10 @@ tMouseVal = {
     t_targetCol:T_TARGETCOL,
     t_audio:T_AUDIO,
     repelers:REPELERS,
+    mousePos:{type:"v3",value:new THREE.Vector3()},
+    cameraPos:{type:"v3",value:new THREE.Vector3()},
+    mouseRepel:{type:"f",value:.1},
+    mouseRepelRadius:{type:"f",value:.1},
 
     movementSpeed:{type:"f",value:0},
     movementSize:{type:"f",value:0},
@@ -340,10 +348,10 @@ tMouseVal = {
 
       var mat = new THREE.ShaderMaterial({
         uniforms: renderUniforms,
-        attributes: { 
+        /*attributes: { 
             triPos: {type:"v3", value:null},
             id:{type:"f",value:null}
-        },
+        },*/
         vertexShader: shaders.vs.prism,
         fragmentShader: shaders.fs.prism,
         side: THREE.BackSide
@@ -382,28 +390,31 @@ tMouseVal = {
       var geo = new THREE.IcosahedronGeometry( .01 , 1 );
       var mat = new THREE.MeshBasicMaterial({color:"#ffffff",map:G.textures.mystery});
       var mesh = new THREE.Mesh(geo , mat );
+
       //scene.add( mesh );
       
     window.addEventListener( 'keydown', keydown, false );
     window.addEventListener( 'keyup', keyup, false );
     window.addEventListener( 'mousemove', mousemove, false );
+
+    var geo = new THREE.PlaneGeometry(100 , 100 );
+    var mat = new THREE.MeshNormalMaterial({
+      opacity:0,
+      transparent:true,
+      side: THREE.DoubleSide
+    });
+
+    raycastPlane = new THREE.Mesh( geo , mat );
+    scene.add( raycastPlane ); 
+
   }
 
   function animate(){
 
     
-
     TWEEN.update();
- 
-    simulationUniforms.dT.value = clock.getDelta();
-    simulationUniforms.time.value += simulationUniforms.dT.value;
-    simulation.update();
-    rotationSim.update();
-
-    controls.update();
-    audio.update();
-
-    tv1.copy( camera.position );
+   // console.log( camera.position );
+    //cameraTemp.copy( camera.position );
 
     var mSize = simulationUniforms.movementSize.value;
     var mSpeed = simulationUniforms.movementSpeed.value;
@@ -415,14 +426,41 @@ tMouseVal = {
     tv2.set( mouseVal.x , mouseVal.y ,0 );
     
     // osscilate camera a lil bit
-    camera.position.add( tv2);
+    //camera.position.add( tv2);
     
 
     camera.lookAt( target );
     
+    // update the picking ray with the camera and mouse position  
+    raycaster.setFromCamera( mouse, camera ); 
+
+    var intersect = raycaster.intersectObject( raycastPlane );
+   // console.log( intersect[0] );
+
+    if( intersect[0] ){
+     // console.log( intersect[0].point );
+      //if( raycaster.ray.direction.z != -1 ){ console.log(raycaster.ray.direction)}
+      simulationUniforms.mousePos.value.copy( intersect[0].point );
+    }
+
+    simulationUniforms.cameraPos.value.copy( camera.position );
+ 
+ 
+    simulationUniforms.dT.value = clock.getDelta();
+    simulationUniforms.time.value += simulationUniforms.dT.value;
+    simulation.update();
+    rotationSim.update();
+
+   // controls.update();
+    audio.update();
+
+
+    
     renderer.render( scene , camera );
     stats.update();
-    camera.position.copy( tv1 );
+
+
+   // camera.position.copy( cameraTemp );
 
 
 
@@ -465,7 +503,11 @@ tMouseVal = {
 
     tMouseVal.x = (e.clientX / window.innerWidth) - .5;
     tMouseVal.y = (e.clientY / window.innerHeight) - .5;
-    //console.log( e );
+
+    mouse.x =   ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;   
+
+
   }
 
 

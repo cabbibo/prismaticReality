@@ -33,7 +33,7 @@
         //if( i < 1000 ){ console.log( angle ); }
         c.setHSL(2 * Math.abs(angle) / Math.PI  , 1 , .5 );
 
-        if( i < 1000 ){ console.log(c); }
+       // if( i < 1000 ){ console.log(c); }
 
 
         data[i+0] = c.r;
@@ -92,6 +92,8 @@
         data[i+1] = tv1.y;
         data[i+2] = tv1.z;
         data[i+3] = opalAxis.size;//(Math.random() - .5 );
+
+        if( opalIndex == 0 ){ data[i+3] = .1;}
   
  
 
@@ -139,6 +141,44 @@
 
     }
 
+    function makeOpalColorTexture( numOpals , height , depth){
+ 
+      var data = new Float32Array( SIZE * SIZE  * 4 );
+
+      var numPerOpal = Math.floor(  SIZE * SIZE / numOpals );
+      var opalWidth = height;
+      var opalHeight = depth;
+      var opalDepth = Math.floor( numPerOpal / ( opalWidth * opalHeight ));
+      console.log( "OPAS");
+      console.log( opalDepth );
+
+      var color = new THREE.Color();
+
+      for( var i =0; i < data.length; i+=4 ){
+
+        var index = Math.floor( i / 4 );
+        var opalIndex = Math.floor( index / numPerOpal );
+        var indexInOpal = index - opalIndex * numPerOpal;
+
+
+        color.setHSL( opalIndex / numOpals  , 1, .5);
+
+
+
+        data[i+0] = color.r;
+        data[i+1] = color.g;
+        data[i+2] = color.b;
+        data[i+3] = 1;//(Math.random() - .5 );
+  
+ 
+
+      }
+
+      return makeDataTexture( data );
+
+    }
+
+
     function getOpalAxis( opalID ){
 
       // could get grid size to make spacing dynamic?
@@ -166,9 +206,9 @@
         start.normalize();
         var r = random( opalID *1961);
         start.multiplyScalar(random( opalID *1961));
-        tv1.set(.5,1.2,.3);
+        tv1.set(.4,.8,.2);
         start.multiply( tv1 );
-        size = (r) * .03 + .005;
+        size = (r) * .01 + .01;
 
 
       }else{
@@ -341,7 +381,7 @@
           data[ i + 1 ] = (Math.random()) * size - size / 2; 
           data[ i + 2 ] = (Math.random()) * size - size / 2; 
           data[ i + 3 ] = othersSize;
-          
+
         }
 
         //console.log( f.x );

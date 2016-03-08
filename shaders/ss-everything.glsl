@@ -30,6 +30,11 @@ uniform float curlNoiseSize;
 uniform float toTargetForce;
 uniform float audioRadius;
 uniform float audioPower;
+uniform float mouseRepel;
+uniform float mouseRepelRadius;
+
+uniform vec3 cameraPos;
+uniform vec3 mousePos;
 
 //if very gooey, return spring low, dampening low
 // if very not gooey, return spring high, dampening high
@@ -46,6 +51,19 @@ float smin( float a, float b)
     float k = 0.77521;
     float h = clamp( 0.5+0.5*(b-a)/k, 0.0, 1.0 );
     return mix( b, a, h ) - k*h*(1.0-h);
+}
+
+float sdCapsule( vec3 p, vec3 a, vec3 b, float r )
+{
+    vec3 pa = p - a, ba = b - a;
+    float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+    return length( pa - ba*h ) - r;
+}
+
+float map( vec3 pos ){
+
+  vec3 dif = normalize(mousePos - cameraPos);
+  return sdCapsule( pos , cameraPos , dif * 10000.0 , mouseRepelRadius );
 }
 
 void main(){
@@ -68,6 +86,23 @@ void main(){
   force -= length( dif ) * length( dif ) * normalize( dif ) * toTargetForce;
 
   force += curlNoise( pos.xyz * curlNoiseSize ) * dispersion;
+
+  float distanceToCapsule = map( pos.xyz );
+  if( distanceToCapsule < 0. ){
+    // Calculates the normal by taking a very small distance,
+// remapping the function, and getting normal for that
+    
+    vec3 eps = vec3( 0.0001, 0.0, 0.0 );
+    vec3 nor = vec3(
+        map(pos.xyz+eps.xyy) - map(pos.xyz-eps.xyy),
+        map(pos.xyz+eps.yxy) - map(pos.xyz-eps.yxy),
+        map(pos.xyz+eps.yyx) - map(pos.xyz-eps.yyx) );
+    nor = normalize( nor );
+    force += nor  * mouseRepel;
+
+
+
+  }
 
 
   for( int i = 0; i < size; i++ ){
