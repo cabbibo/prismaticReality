@@ -87,7 +87,7 @@ tMouseVal = {
   y:0,
 }
 
-var mouse = new THREE.Vector2();
+var mouse = new THREE.Vector2(1000000 , 10000000);
 var raycaster = new THREE.Raycaster();
 var cameraTemp  = new THREE.Vector3();
 
@@ -155,8 +155,8 @@ var cameraTemp  = new THREE.Vector3();
     repelers:REPELERS,
     mousePos:{type:"v3",value:new THREE.Vector3()},
     cameraPos:{type:"v3",value:new THREE.Vector3()},
-    mouseRepel:{type:"f",value:.1},
-    mouseRepelRadius:{type:"f",value:.1},
+    mouseRepel:{type:"f",value:0},
+    mouseRepelRadius:{type:"f",value:0},
 
     movementSpeed:{type:"f",value:0},
     movementSize:{type:"f",value:0},
@@ -273,9 +273,11 @@ var cameraTemp  = new THREE.Vector3();
     
 
       renderer = new THREE.WebGLRenderer();
-      renderer.setSize( window.innerWidth, window.innerHeight );
+      renderer.setSize( window.innerWidth, window.innerHeight , true );
 
       renderer.domElement.id = "renderer"
+
+      renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
       document.body.appendChild( renderer.domElement );
 
 
@@ -405,6 +407,7 @@ var cameraTemp  = new THREE.Vector3();
     });
 
     raycastPlane = new THREE.Mesh( geo , mat );
+    raycastPlane.position.z = .001;
     scene.add( raycastPlane ); 
 
   }
@@ -414,7 +417,7 @@ var cameraTemp  = new THREE.Vector3();
     
     TWEEN.update();
    // console.log( camera.position );
-    //cameraTemp.copy( camera.position );
+    cameraTemp.copy( camera.position );
 
     var mSize = simulationUniforms.movementSize.value;
     var mSpeed = simulationUniforms.movementSpeed.value;
@@ -441,6 +444,7 @@ var cameraTemp  = new THREE.Vector3();
      // console.log( intersect[0].point );
       //if( raycaster.ray.direction.z != -1 ){ console.log(raycaster.ray.direction)}
       simulationUniforms.mousePos.value.copy( intersect[0].point );
+      renderUniforms.lightPos.value.copy( intersect[0].point );
     }
 
     simulationUniforms.cameraPos.value.copy( camera.position );
@@ -460,7 +464,7 @@ var cameraTemp  = new THREE.Vector3();
     stats.update();
 
 
-   // camera.position.copy( cameraTemp );
+    camera.position.copy( cameraTemp );
 
 
 

@@ -393,6 +393,8 @@ var MakePages = function(){
                                     dampening: .8,
                                     dispersion: 0,
                                     audioDisplacement: 0,
+                                     mouseRepel:.0001,
+                                    mouseRepelRadius:0.01
                                    },
 
     targetRotationSimulationUniforms : {
@@ -432,7 +434,7 @@ var MakePages = function(){
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
-                                    toTargetForce: 1,
+                                    toTargetForce: 20,
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
@@ -480,7 +482,9 @@ var MakePages = function(){
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                     movementSpeed:1,
-                                    movementSize:.0
+                                    movementSize:.0,
+                                     mouseRepel:0,
+                                    mouseRepelRadius:0
                                    },
 
     targetRotationSimulationUniforms : {
@@ -525,7 +529,9 @@ var MakePages = function(){
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                     movementSpeed:.01,
-                                    movementSize:.3
+                                    movementSize:.3,
+                                    mouseRepel:.1,
+                                    mouseRepelRadius:.1
                                    },
 
     targetRotationSimulationUniforms : {
@@ -569,13 +575,15 @@ var MakePages = function(){
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                     movementSpeed:.01,
-                                    movementSize:.3
+                                    movementSize:.3,
+                                     mouseRepel:0,
+                                    mouseRepelRadius:0
                                    },
 
     targetRotationSimulationUniforms : {
-                                      speed: 0.1,
+                                      speed: .3,
                                       toTargetAxis:1,
-                                      toTargetAngle:1,
+                                      toTargetAngle:.8,
                                  
                                    
                                       },
@@ -810,7 +818,9 @@ var MakePages = function(){
                                     dispersion: 0,
                                     audioDisplacement: 0,
                                     movementSpeed:.1,
-                                    movementSize:1
+                                    movementSize:1,
+                                    mouseRepel:.2,
+                                    mouseRepelRadius:.1
                                    },
 
     targetRotationSimulationUniforms : {
@@ -853,7 +863,9 @@ var MakePages = function(){
                                     audioPower: .01,
                                     audioDisplacement: 0,
                                     movementSpeed:.01,
-                                    movementSize:2
+                                    movementSize:2,
+                                    mouseRepel:.1,
+                                    mouseRepelRadius:.1
                                    },
 
     targetRotationSimulationUniforms : {
@@ -900,7 +912,9 @@ var MakePages = function(){
                                     audioRadius: .5,
                                     audioPower: .01,
                                     movementSpeed:.1,
-                                    movementSize:0
+                                    movementSize:0,
+                                    mouseRepel:.1,
+                                    mouseRepelRadius:.02
                                    },
 
     targetRotationSimulationUniforms : {
