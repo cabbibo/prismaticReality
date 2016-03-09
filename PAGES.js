@@ -46,7 +46,7 @@ var MakePages = function(){
 
     {
 
-    title                        : "Discovering our Prismatic Reality",
+    title                        : "cabbi.bo",
 
     pageTurnTime                 : 1000,
 
@@ -1208,9 +1208,10 @@ var MakePages = function(){
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
-                                    simulationSize: 1,
+                                   
                                     audioSize:0,
                                     baseSize:0,
+                                    simulationSize:0,
                                     audioDisplacement:.01,
                                     rainbowValue: 0,
                                     audioColorAmount:0,
@@ -1232,7 +1233,7 @@ var MakePages = function(){
 
     {
 
-    title                        : "isaaclandoncohen@gmail.com",
+    title                        : "cabbi.bo<br/> @cabbibo<br/>isaaclandoncohen@gmail.com",
 
     pageTurnTime                 : 1000,
 
@@ -1280,8 +1281,8 @@ var MakePages = function(){
                                     biggerFartherAddition: 0.0,
                                    },
 
-    cameraPosition               : new THREE.Vector3( 0 , 0.0 , .2 ),
-    cameraTarget                 : new THREE.Vector3( 0 , 0.0 , 0 ),
+    cameraPosition               : new THREE.Vector3( -0.0 , -0.0 , .6 ),
+    cameraTarget                 : new THREE.Vector3( -0.0 , -0.0 , 0 ),
 
 
   },
