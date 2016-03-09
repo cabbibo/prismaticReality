@@ -90,6 +90,7 @@ tMouseVal = {
 var mouse = new THREE.Vector2(1000000 , 10000000);
 var raycaster = new THREE.Raycaster();
 var cameraTemp  = new THREE.Vector3();
+var turning  = false;
 
 </script>
 
@@ -206,6 +207,8 @@ var cameraTemp  = new THREE.Vector3();
     individualColorAmount : {type:"f",value:0},
     individualAudioAmount : {type:"f",value:0},
     matchHueAmount : {type:"f",value:0},
+    hueUVValue: {type:"f",value:0},
+    hueUVSize: {type:"f",value:0},
 
     normalMapSize : {type:"f",value:.1},
     normalMapDepth : {type:"f",value:1},
@@ -289,7 +292,7 @@ var cameraTemp  = new THREE.Vector3();
       stats.domElement.style.left = "0px";
       stats.domElement.style.bottom = "-30px";
       stats.domElement.style.zIndex = "999";
-      document.body.appendChild( stats.domElement );
+      //document.body.appendChild( stats.domElement );
 
 
       // GONNA TAKE A WHILE
@@ -522,7 +525,9 @@ var cameraTemp  = new THREE.Vector3();
     console.log( e );
     if( e.code == "ArrowRight" ){ 
       console.log('ss'); 
-      turnPage(); 
+      if( turning == false ){
+        turnPage(); 
+      }
     }
     if( e.code == "ArrowLeft" ){ turnPageBack(); }
   }

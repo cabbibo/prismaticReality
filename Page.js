@@ -125,6 +125,8 @@ Page.prototype.fillUniforms = function( uniformType ){
 Page.prototype.start = function(){
   title.innerHTML = "";
 
+  turning = true;
+
   console.log( this.title );
   console.log( this.rotVals);
   console.log( this.targetRotationSimulationUniforms );
@@ -207,6 +209,7 @@ Page.prototype.start = function(){
     this.setUniforms( renderUniforms , this.targetRenderUniforms );
 
     this.onComplete();
+    turning = false;
   }.bind( this ) );
 
   tween.start();
@@ -224,7 +227,8 @@ Page.prototype.onComplete = function(){
   var color = "#fff"
   if( this.titleColor ) color = this.titleColor;
 
-  var string = (this.id + 1) + ". " + this.title;
+  //var string = (this.id + 1) + ". " + this.title;
+  var string = this.title;
 
   title.innerHTML = string;
   title.style.color = color;

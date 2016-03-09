@@ -13,6 +13,8 @@ uniform float individualColorAmount;
 uniform float individualAudioAmount;
 uniform float matchHueAmount;
 uniform float semAmount;
+uniform float hueUVValue;
+uniform float hueUVSize;
 
 uniform float normalMapSize;
 uniform float normalMapDepth;
@@ -88,8 +90,12 @@ void main(){
   col = mix( col, (-fNorm * .5 + .5) , normalColorAmount);
   col = mix( col, (normalize(vVel) * .5 + .5) , velocityColorAmount);
 
+  col = mix( col ,hsv( vUv.y * hueUVSize , 1. , 1. ) , hueUVValue );
+
   col *= mix( vec3(1.) , sem.xyz * 2.4 , semAmount );
   col = mix( col, vec3( 1. ), brightness);
+
+
 
 
   //col = vec3( vUv.x , vUv.y , 1. );
