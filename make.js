@@ -206,7 +206,7 @@
         start.normalize();
         var r = random( opalID *1961);
         start.multiplyScalar(random( opalID *1961));
-        tv1.set(.4,.8,.2);
+        tv1.set(.8,.4,.2);
         start.multiply( tv1 );
         size = (r) * .01 + .01;
 

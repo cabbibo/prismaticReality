@@ -6,7 +6,7 @@
       font-family: "GeoSans";
       src: url("assests/GeosansLight.ttf");
     }
-    html{ color:#ffc; background:#000; font-family:"GeoSans" }
+    html{ color:#ffc; background:#000; font-family:"GeoSans" ; cursor:none;}
     body{
       font-size:30px;
     }
@@ -303,14 +303,14 @@ var cameraTemp  = new THREE.Vector3();
       }
 
 
-      var geo = new THREE.IcosahedronGeometry( .01 , 2 );
-      var mat = new THREE.MeshBasicMaterial();
-      var light = new THREE.Mesh( geo , mat );
+      var geo = new THREE.IcosahedronGeometry( 1. , 2 );
+      var mat = new THREE.MeshBasicMaterial({color: 0x010101 });
+      light = new THREE.Mesh( geo , mat );
       light.position.x = .1;
       light.position.y = .1;
       light.position.z = -.1;
       renderUniforms.lightPos.value = light.position;
-      //scene.add( light );
+      scene.add( light );
 
 
 
@@ -399,16 +399,16 @@ var cameraTemp  = new THREE.Vector3();
     window.addEventListener( 'keyup', keyup, false );
     window.addEventListener( 'mousemove', mousemove, false );
 
-    var geo = new THREE.PlaneGeometry(100 , 100 );
+    var geo = new THREE.PlaneGeometry(1 , 1 );
     var mat = new THREE.MeshNormalMaterial({
-      opacity:0,
-      transparent:true,
+     // opacity:0,
+     // transparent:true,
       side: THREE.DoubleSide
     });
 
     raycastPlane = new THREE.Mesh( geo , mat );
     raycastPlane.position.z = .001;
-    scene.add( raycastPlane ); 
+    //scene.add( raycastPlane ); 
 
   }
 
@@ -429,23 +429,47 @@ var cameraTemp  = new THREE.Vector3();
     tv2.set( mouseVal.x , mouseVal.y ,0 );
     
     // osscilate camera a lil bit
-    //camera.position.add( tv2);
+    camera.position.add( tv2);
     
 
     camera.lookAt( target );
+
+    tv1.copy( target );
+    tv1.sub( camera.position );
+    tv1.normalize();
+    tv1.multiplyScalar( .0015 );
+    tv1.add( camera.position );
+
+    raycastPlane.position.copy( tv1 );// = camera.position.z - .0015;
+    raycastPlane.lookAt( camera.position  );
+ 
     
     // update the picking ray with the camera and mouse position  
-    raycaster.setFromCamera( mouse, camera ); 
+    raycaster.setFromCamera( mouse , camera );
 
-    var intersect = raycaster.intersectObject( raycastPlane );
+
+    light.position.copy( camera.position );
+    tv1.copy( raycaster.ray.direction );
+    tv1.multiplyScalar( .003 );
+    light.position.add( tv1);
+ 
+   // var intersect = raycaster.intersectObject( raycastPlane );
    // console.log( intersect[0] );
 
-    if( intersect[0] ){
-     // console.log( intersect[0].point );
+   // if( intersect[0] ){
+    // console.log( intersect[0] );
       //if( raycaster.ray.direction.z != -1 ){ console.log(raycaster.ray.direction)}
-      simulationUniforms.mousePos.value.copy( intersect[0].point );
-      renderUniforms.lightPos.value.copy( intersect[0].point );
-    }
+     simulationUniforms.mousePos.value.copy( light.position );
+     renderUniforms.lightPos.value.copy( light.position );
+     // light.position.copy( intersect[0].point );
+
+    //}
+
+    light.scale.set( 1 , 1, 1);
+    tv1.copy( camera.position );
+    tv1.sub( target );
+
+    light.scale.multiplyScalar( .00001 );
 
     simulationUniforms.cameraPos.value.copy( camera.position );
  

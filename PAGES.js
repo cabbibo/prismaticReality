@@ -12,6 +12,12 @@ var MakePages = function(){
   refractionFlatLookup = makeImageTexture(.3,  G.textures.refractionFlat );
   prismColor = makeColorFromTextureImage( .3 , prismFlatLookup, G.textures.prismFlat );
 
+  opalImageLookup = makeImageTexture(.3,  G.textures.opal );
+  opalImageColor = makeColorFromTextureImage(.3, opalImageLookup,  G.textures.opal );
+
+  opal2ImageLookup = makeImageTexture(.3,  G.textures.opal2 );
+  opal2ImageColor = makeColorFromTextureImage(.3, opal2ImageLookup,  G.textures.opal2 );
+
   randomRotationAxis = makeNormalizedTexture();
   verticalRotationAxis = makeVerticalTexture();
   
@@ -413,6 +419,7 @@ var MakePages = function(){
                                     normalMapSize:.04,
                                     reflectColorAmount:0,
                                     normalColorAmount:0,
+                                    velocityColorAmount:0,
                                     individualColorAmount:1,
                                     semAmount:1,
                                    },
@@ -455,7 +462,9 @@ var MakePages = function(){
                                     colorValue: 1,
                                     rainbowValue: 0,
                                     individualColorAmount:0,
-                                    reflectColorAmount:1,
+                                   // reflectColorAmount:1,
+                                    velocityColorAmount:0,
+                                    individualColorAmount:1,
                                     normalMapDepth:1,
                                     normalMapSize:.2,
                                    },
@@ -473,7 +482,7 @@ var MakePages = function(){
     pageTurnTime                 : 1000,
 
     targetTexture                : prismFlatLookup,
-    targetColorTexture           : makeRandomTexture( 1  ),
+    targetColorTexture           : prismColor,
     target2Texture               : verticalRotationAxis,
 
     targetSimulationUniforms     : {
@@ -501,9 +510,12 @@ var MakePages = function(){
                                     rainbowValue: 0,
                                     reflectColorAmount:0,
                                     normalColorAmount:0,
-                                    normalMapDepth:0,
+                                    normalMapDepth:1,
+                                    normalMapSize:1,
                                     velocityColorAmount:0,
                                     audioColorAmount:1,
+                                    velocityColorAmount:0,
+                                    individualColorAmount:0,
                                     semAmount:0,
                                    },
 
@@ -659,9 +671,9 @@ var MakePages = function(){
 
   }, 
 
-  {
+    {
 
-    title                        : "DISCOVERY",
+    title                        : "TOO",
 
     pageTurnTime                 : 1000,
 
@@ -674,8 +686,8 @@ var MakePages = function(){
                                     dampening: .6,
                                     dispersion: 0,
                                     audioDisplacement: 0,
-                                    movementSpeed:.1,
-                                    movementSize:6
+                                    movementSpeed:.02,
+                                    movementSize:1
                                    },
 
     targetRotationSimulationUniforms : {
@@ -695,11 +707,106 @@ var MakePages = function(){
                                     reflectColorAmount:1,
                                     //individualColorAmount:.3,
                                     simulationSize:0.,
-                                    baseSize:.03,
+                                    baseSize:.01,
                                     semAmount:.5
                                    },
 
-    cameraPosition               : new THREE.Vector3( 0 , 0.0 , 2.6 ),
+    cameraPosition               : new THREE.Vector3( 0 , 0.0 , .6 ),
+    cameraTarget                 : new THREE.Vector3( 0 , 0.0 , 0 ),
+
+
+  }, 
+
+    {
+
+    title                        : "SEARCH",
+
+    pageTurnTime                 : 1000,
+
+    targetTexture                : opalImageLookup,
+    targetColorTexture           : opalImageColor,
+    target2Texture               : opal2RotationTexture,
+
+    targetSimulationUniforms     : {
+                                    toTargetForce: 1,
+                                    dampening: .6,
+                                    dispersion: 0,
+                                    audioDisplacement: 0,
+                                    movementSpeed:.01,
+                                    movementSize:.06
+                                   },
+
+    targetRotationSimulationUniforms : {
+                                      speed: .2,
+                                      toTargetAxis:0,
+                                      toTargetAngle:0,
+                                      toVelocity:1,
+                                 
+                                   
+                                      },
+
+    targetRenderUniforms         : {
+                                    audioValue: 0,
+                                    colorValue: 1,
+                                    rainbowValue: 0,
+                                    normalMapDepth:1,
+                                    normalMapSize:.001,
+                                    reflectColorAmount:0,
+                                    individualAudioAmount:.9,
+                                    individualColorAmount:0,
+                                    simulationSize:1.,
+                                    baseSize:.001,
+                                    semAmount:.5
+                                   },
+
+    cameraPosition               : new THREE.Vector3( 0 , 0.0 , .6 ),
+    cameraTarget                 : new THREE.Vector3( 0 , 0.0 , 0 ),
+
+
+  }, 
+
+    {
+
+    title                        : "DISCOVERY",
+
+    pageTurnTime                 : 1000,
+
+    targetTexture                : opalImageLookup,
+    targetColorTexture           : opalImageColor,
+    target2Texture               : opal2RotationTexture,
+
+    targetSimulationUniforms     : {
+                                    toTargetForce: 1,
+                                    dampening: .6,
+                                    dispersion: 0,
+                                    audioDisplacement: 0,
+                                    movementSpeed:.01,
+                                    movementSize:1
+                                   },
+
+    targetRotationSimulationUniforms : {
+                                      speed: .2,
+                                      toTargetAxis:0,
+                                      toTargetAngle:0,
+                                      toVelocity:1,
+                                 
+                                   
+                                      },
+
+    targetRenderUniforms         : {
+                                    audioValue: 0,
+                                    colorValue: 1,
+                                    rainbowValue: 0,
+                                    normalMapDepth:1,
+                                    normalMapSize:.001,
+                                    reflectColorAmount:.3,
+                                    individualColorAmount:.9,
+                                    simulationSize:2.,
+                                    baseSize:.01,
+                                    semAmount:.5
+                                   },
+
+    cameraPosition               : new THREE.Vector3( 0 , 0.0 , .6 ),
     cameraTarget                 : new THREE.Vector3( 0 , 0.0 , 0 ),
 
 
@@ -709,10 +816,10 @@ var MakePages = function(){
 
     title                        : "ROYAL PEACOCK GPU",
 
-    pageTurnTime                 : 1000,
+    pageTurnTime                 : 5000,
 
     targetTexture                : multitudeTexture,
-    targetColorTexture           : opal2ColorTexture,
+    targetColorTexture           : opalImageColor,
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
@@ -742,6 +849,7 @@ var MakePages = function(){
                                     normalMapSize:.01,
                                     normalMapDepth:2,
                                     individualAudioAmount:1,
+                                    individualColorAmount:0.7,
                                     matchHueAmount:0,
                                     simulationSize:1,
                                     baseSize:0
@@ -758,10 +866,10 @@ var MakePages = function(){
 
     title                        : "IM | MATERIA",
 
-    pageTurnTime                 : 1000,
+    pageTurnTime                 : 3000,
 
     targetTexture                : multitudeTexture,
-    targetColorTexture           : opal2ColorTexture,
+    targetColorTexture           : opalImageColor,
     target2Texture               : randomRotationAxis,
 
     targetSimulationUniforms     : {
@@ -909,8 +1017,8 @@ var MakePages = function(){
                                     dampening: .9,
                                     dispersion: 0,
                                     audioDisplacement: 0,
-                                    audioRadius: .5,
-                                    audioPower: .01,
+                                    audioRadius: .4,
+                                    audioPower: .005,
                                     movementSpeed:.1,
                                     movementSize:0,
                                     mouseRepel:.1,
