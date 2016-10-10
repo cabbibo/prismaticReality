@@ -6,7 +6,7 @@
       font-family: "GeoSans";
       src: url("assests/GeosansLight.ttf");
     }
-    html{ color:#ffc; background:#000; font-family:"GeoSans" ; cursor:none;}
+    html{ color:#fff; background:#000; font-family:"GeoSans" ; }
     body{
       font-size:30px;
     }
@@ -30,18 +30,96 @@
     #title{
       color:#fff;
       font-size: 100px;
-      left:30px;
+      right:30px;
       bottom:30px;
       position:absolute;
 
       z-index: 99;
     }
 
+    .navNode{
+      width: 30px;
+      height: 30px;
+      //position: absolute;
+      border: 1px solid #fff;
+      float: left;
+      margin: 10px;
+      background-color:rgba(0,0,0,.2);
+    }
+
+   
+
+    #navbar{
+      position:absolute;
+      z-index: 99;
+      width:100%;
+      //background: #011;
+
+    }
+
+    #duringLoad{
+      position:absolute;
+      z-index: 99;
+    }
+
+    #loadbar{
+      height:30px;
+      position:absolute;
+      background:#fff;
+    }
+
+    #startButton{
+      border:1px solid white;
+      visibility: hidden;
+      width:20%;
+      left:40%;
+      position:absolute;
+      text-align: center;
+      padding:10px;
+    }
+
+    #startButton:hover{
+      background:#fff;
+      color:#000;
+    }
+
+    #loaderHolder{
+      width:100%;
+      height:30px;
+      left:-3px;
+      position:absolute;
+      border:3px solid white;
+    }
+
+    #description{
+      padding:10%;
+    }
+
+
   
   </style>
 
 </head>
 <body style="margin:0px">
+<div id="duringLoad">
+  <div id="loaderHolder"><div id="loadbar"></div></div>
+  <div id="description">
+    <p>
+    Hey!<br/>
+    So this is a talk I gave at <a target="_blank" href="http://nextart.tech/"> Next Art Night </a> which is a parsed down version of one that I originally presented at Pixar.
+    <br/><br/>
+    I've been trying to think of how exactly to be taking these interactive speeches, and putting them up for others to experience. 
+    I don't know how well it works, but I would love to hear what you think of it. Hit me up on <a target="_blank" href="http://twitter.com/cabbibo">twitter : @cabbibo </a> or <a target="_blank" href="mailto:hello@cabbi.bo">email me: hello@cabbi.bo</a>
+    <br/>
+    Runtime: 15 min
+    <br/><br/>
+    - Isaac
+
+    </p>
+
+  </div>
+  <div id="startButton" onclick="beginItAll()">START</div>
+</div>
 <div id="title"></div>
 
 <script src="lib/three.min.js"></script>
@@ -54,6 +132,8 @@
 <script src="lib/noise.js"></script>
 
 <script src="lib/AudioController.js"></script>
+<script src="lib/BufferedAudio.js"></script>
+<script src="lib/AudioBuffer.js"></script>
 <script src="lib/UserAudio.js"></script>
 <script src="lib/Stream.js"></script>
 
@@ -91,6 +171,8 @@ var mouse = new THREE.Vector2(1000000 , 10000000);
 var raycaster = new THREE.Raycaster();
 var cameraTemp  = new THREE.Vector3();
 var turning  = false;
+
+var loadDiv = document.getElementById( "loadbar");
 
 </script>
 
@@ -232,11 +314,23 @@ var turning  = false;
 
 
   var audio = new AudioController();
-  audio.mute.gain.value = 0;
+  //audio.mute.gain.value = 0;
 
-  var userAudio = new UserAudio(audio.ctx , audio.gain ); 
+  G.audio = audio;
 
-  var stream = new Stream( "audio/love.mp3", audio.ctx , audio.gain );
+  //var userAudio = new UserAudio(audio.ctx , audio.gain ); 
+
+  var compressor = audio.ctx.createDynamicsCompressor();
+  compressor.connect(audio.gain);
+
+compressor.threshold.value = -50;
+compressor.knee.value = 40;
+compressor.ratio.value = 1200;
+compressor.reduction.value = -10;
+compressor.attack.value = 0;
+compressor.release.value = 0.25;
+
+  var stream = new Stream( "audio/love.mp3", audio.ctx , compressor );
   //stream.play();
 
   var shaders = new ShaderLoader( 'shaders' );
@@ -249,8 +343,6 @@ var turning  = false;
 
   
   function init(){
-
-
 
       var url = document.URL;
       var stringArray = url.split("#");
@@ -294,16 +386,30 @@ var turning  = false;
       stats.domElement.style.zIndex = "999";
       //document.body.appendChild( stats.domElement );
 
+console.log( G );
+
+      var gain     = audio.ctx.createGain();
+      gain.connect( audio.gain );
+      gain.gain.value = .2;
+
+      G.switchNote = new BufferedAudio( G.clickNoteBuffer.buffer , audio.ctx , gain );
+
+  
+      //G.switchNote.gain.value = .3;
+      G.wrongNote = new BufferedAudio( G.wrongNoteBuffer.buffer , audio.ctx , audio.gain );
 
       // GONNA TAKE A WHILE
       PAGES = MakePages();
 
       for( var i = 0; i < PAGES.length; i++ ){
 
+        console.log( pages );
         var p = new Page( i , PAGES[i] );
         pages.push( p );
 
       }
+
+     
 
 
       var geo = new THREE.IcosahedronGeometry( 1. , 2 );
@@ -314,6 +420,8 @@ var turning  = false;
       light.position.z = -.1;
       renderUniforms.lightPos.value = light.position;
       scene.add( light );
+
+
 
 
 
@@ -390,28 +498,24 @@ var turning  = false;
 
 
 
-      pages[currentPage].start();
+      
 
-      var geo = new THREE.IcosahedronGeometry( .01 , 1 );
-      var mat = new THREE.MeshBasicMaterial({color:"#ffffff",map:G.textures.mystery});
-      var mesh = new THREE.Mesh(geo , mat );
 
-      //scene.add( mesh );
       
     window.addEventListener( 'keydown', keydown, false );
     window.addEventListener( 'keyup', keyup, false );
     window.addEventListener( 'mousemove', mousemove, false );
+    window.addEventListener( 'resize'   , resize , false );
 
-    var geo = new THREE.PlaneGeometry(1 , 1 );
+    var geo = new THREE.PlaneGeometry( 1 , 1 );
     var mat = new THREE.MeshNormalMaterial({
-     // opacity:0,
-     // transparent:true,
       side: THREE.DoubleSide
     });
 
     raycastPlane = new THREE.Mesh( geo , mat );
-    raycastPlane.position.z = .001;
-    //scene.add( raycastPlane ); 
+
+  
+    addStartButton();
 
   }
 
@@ -499,21 +603,58 @@ var turning  = false;
 
   }
 
-  function turnPage(){
-    currentPage++;
-    if( currentPage < pages.length ){
-      pages[currentPage].start();
+  function turnToPage( pageNum ){
+
+    if( turning == false ){
+      pages[currentPage].navDiv.style.border = "1px solid #ccc"
+      G.switchNote.play();
+      pages[pageNum].start();
+      currentPage = pageNum;
+      pages[currentPage].navDiv.style.border = "5px solid white"
     }else{
-      currentPage = pages.length - 1;
+      console.log( turning );
+      G.wrongNote.play();
+    }
+
+  }
+
+  function turnPage(){
+
+
+    if( turning == false ){
+      pages[currentPage].navDiv.style.border = "1px solid #ccc"
+      G.switchNote.play();
+      currentPage++;
+      pages[currentPage].navDiv.style.border = "5px solid white"
+      if( currentPage < pages.length ){
+        pages[currentPage].start();
+      }else{
+        currentPage = pages.length - 1;
+       }
+
+    }else{
+        G.wrongNote.play();
+      
     }
   }
 
   function turnPageBack(){
-    currentPage--;
-    if(currentPage >= 0 ){
-      pages[currentPage].start();
+
+    if( turning == false ){
+      if( currentPage >= 0 ){
+        pages[currentPage].navDiv.style.border = "1px solid #ccc"
+        G.switchNote.play();
+        currentPage--;
+        pages[currentPage].navDiv.style.border = "5px solid white"
+        pages[currentPage].start();
+      }else{
+        G.wrongNote.play();
+      }
+        
+     
+      
     }else{
-      currentPage = 0;
+      G.wrongNote.play();
     }
   }
 
@@ -523,13 +664,17 @@ var turning  = false;
   }
   function keyup( e ){
     console.log( e );
-    if( e.code == "ArrowRight" ){ 
+    /*if( e.code == "ArrowRight" ){ 
       console.log('ss'); 
       if( turning == false ){
         turnPage(); 
       }
     }
-    if( e.code == "ArrowLeft" ){ turnPageBack(); }
+    if( e.code == "ArrowLeft" ){ turnPageBack(); }*/
+
+    if( e.code =="Space"){
+      turnPage();
+    }
   }
 
   function mousemove( e ){
@@ -543,13 +688,126 @@ var turning  = false;
 
   }
 
+  function createNavBar(){
+
+    var divs = [];
+    var mainDiv = document.createElement("div");
+    mainDiv.id ="navbar";
+
+    navBar = mainDiv;
+
+
+    for( var i = 0; i < PAGES.length; i++ ){
+
+      divs[i] = document.createElement("div");
+      divs[i].id = "page" + i ;
+      divs[i].className = "navNode";
+      mainDiv.appendChild( divs[i] );
+      console.log("yo");
+
+      var val = i;
+
+      divs[i].style.cursor = 'pointer';
+      divs[i].onclick = function() {
+        console.log( this.pageNumber);
+
+        turnToPage( this.pageNumber);
+
+
+      };
+
+      divs[i].pageNumber = i;
+
+      divs[i].onmouseover = function(){
+        this.style.backgroundColor = "rgba(255,255,255,1)"
+      }
+      divs[i].onmouseout = function(){
+        this.style.backgroundColor = "rgba(0,0,0,.2)";
+      }
+
+      pages[i].navDiv = divs[i];
+
+    }
+
+    document.body.appendChild( mainDiv );
+
+
+  }
+
+
+
+  function beginItAll(){
+
+    //fullscreenIt();
+    removeLoadingStuff();
+    createNavBar();
+    animate();
+
+    G.switchNote.play();
+
+    pages[currentPage].navDiv.style.border = "5px solid white"
+    pages[currentPage].start();
+    document.getElementById("startButton").style.visibility = "hidden";
+  }
+
+  function removeLoadingStuff(){
+
+    document.getElementById("duringLoad").style.visibility = "hidden"
+    
+  }
+
+
+
+function resize(){
+
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+
+
+  var ratio = this.w / this.h;
+
+ 
+  // To try and keep everything neccesary on screen
+  camera.aspect = ratio;
+  camera.fov    = 60 / Math.pow(ratio,.7);   
+  camera.updateProjectionMatrix();
+
+  renderer.setSize( w , h);
+
+
+}
+
+function addStartButton(){
+  document.getElementById("startButton").style.visibility = "visible";
+}
+
+function valueNavbar(){
+navbar.style.opacity ="1"
+}
+
+function devalueNavbar(){
+  navbar.style.opacity =".4"
+}
 
 
 
 
+function fullscreenIt(){
 
+  var element = document.body;
 
+  if(element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if(element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if(element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else if(element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  }
 
+  resize();
+}
 
 
 

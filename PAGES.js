@@ -44,9 +44,9 @@ var MakePages = function(){
 
   var PAGES = [
 
-    {
+   {
 
-    title                        : "cabbi.bo",
+    title                        : "Press SPACE to Turn Page",
 
     pageTurnTime                 : 1000,
 
@@ -83,7 +83,7 @@ var MakePages = function(){
     cameraTarget                 : new THREE.Vector3( 0 , 0 , 0 ),
 
 
-  }, 
+  },
 
 
   {
@@ -116,7 +116,7 @@ var MakePages = function(){
                                     brightness:0,
                                     reflectColorAmount:1,
                                     normalMapSize:.0,
-                                    //semAmount:1
+
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0 , 0.02 ),
@@ -200,7 +200,8 @@ var MakePages = function(){
 
 
   }, 
-      {
+  
+/*{
 
     title                        : "",
     titleColor                   : "#000",
@@ -240,7 +241,7 @@ var MakePages = function(){
   }, 
 
 
-  /*{
+  {
 
     title                        : "BEYOND",
 
@@ -288,9 +289,9 @@ var MakePages = function(){
 
     {
 
-    title                        : "BEAST",
+    title                        : "FAR",
 
-    pageTurnTime                 : 30000,
+    pageTurnTime                 : 1000,
 
     targetTexture                : sunTexture, //makeMeshTexture( new THREE.IcosahedronGeometry( .4 , 1 )  ),
     targetColorTexture           : sunColor,
@@ -335,9 +336,9 @@ var MakePages = function(){
 
   {
 
-    title                        : "MORE",
+    title                        : "SPACE puppy",
 
-    pageTurnTime                 : 5000,
+    pageTurnTime                 : 1000,
 
     targetTexture                : sunTexture,
     targetColorTexture           : makeRandomTexture( 1  ),
@@ -506,7 +507,9 @@ var MakePages = function(){
 
   }, 
 
-  {
+
+
+/*{
 
     title                        : "PRISM",
 
@@ -645,7 +648,8 @@ var MakePages = function(){
     cameraTarget                 : new THREE.Vector3( -.041 , 0.017 , 0 ),
 
 
-  }, 
+  }, */
+
 
   {
 
@@ -666,6 +670,8 @@ var MakePages = function(){
                                     movementSize:.3,
                                     mouseRepel:.1,
                                     mouseRepelRadius:.1
+
+
                                    },
 
     targetRotationSimulationUniforms : {
@@ -676,6 +682,8 @@ var MakePages = function(){
                                    
                                       },
 
+
+
     targetRenderUniforms         : {
                                     audioValue: 0,
                                     colorValue: 1,
@@ -685,6 +693,13 @@ var MakePages = function(){
                                     reflectColorAmount:0,
                                     audioColorAmount:1,
                                     semAmount:1,
+
+                                    normalColorAmount:0,
+                                    normalMapDepth:1,
+                                    normalMapSize:1,
+                                    velocityColorAmount:0,
+                                    velocityColorAmount:0,
+                                    individualColorAmount:0,
                                    },
 
     cameraPosition               : new THREE.Vector3( 0 , 0.0 , .3 ),
@@ -795,7 +810,7 @@ var MakePages = function(){
 
     {
 
-    title                        : "TOO",
+    title                        : "ALIGN",
 
     pageTurnTime                 : 1000,
 
@@ -936,7 +951,7 @@ var MakePages = function(){
 
   {
 
-    title                        : "ROYAL PEACOCK GPU",
+    title                        : "FURTHER",
 
     pageTurnTime                 : 5000,
 
@@ -986,7 +1001,7 @@ var MakePages = function(){
 
   {
 
-    title                        : "IM | MATERIA",
+    title                        : "GROW",
 
     pageTurnTime                 : 3000,
 
@@ -1034,7 +1049,7 @@ var MakePages = function(){
 
     {
 
-    title                        : "PERPETUAL RAINBOW",
+    title                        : "MORE",
 
     pageTurnTime                 : 1000,
 
@@ -1077,7 +1092,7 @@ var MakePages = function(){
 
     {
 
-    title                        : "PRISMATIC REALITY",
+    title                        : "MIRACLE",
 
     pageTurnTime                 : 1000,
 
@@ -1233,7 +1248,7 @@ var MakePages = function(){
 
     {
 
-    title                        : "cabbi.bo<br/> @cabbibo<br/>isaaclandoncohen@gmail.com",
+    title                        : "<a href='http://twitter.com/share?text=What is SPACEpuppy???&url=http://cabbi.bo/SPACEpuppy'>Thank You / Share</a>",
 
     pageTurnTime                 : 1000,
 

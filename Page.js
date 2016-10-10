@@ -21,16 +21,13 @@ function Page( id , params ){
   this.targetRotationSimulationUniforms    = params.targetRotationSimulationUniforms;
   this.targetRenderUniforms                = params.targetRenderUniforms;
 
-
-  //this.targetRenderUniforms             = this.fillUniforms( "targetRenderUniforms");
-  //this.targetSimulationUniforms         = this.fillUniforms( "targetSimulationUniforms");
-  //this.targetRotationSimulationUniforms = this.fillUniforms( "targetRotationSimulationUniforms");
-  
-
   this.cameraPosition               = params.cameraPosition.clone();
   this.cameraTarget                 = params.cameraTarget.clone();
 
-
+  this.fillUniforms( "targetRenderUniforms");
+  this.fillUniforms( "targetSimulationUniforms");
+  this.fillUniforms( "targetRotationSimulationUniforms");
+  
   this.simVals    = this.cloneUniforms( params.targetSimulationUniforms );
   this.rotVals    = this.cloneUniforms( params.targetRotationSimulationUniforms );
   this.renderVals = this.cloneUniforms( params.targetRenderUniforms );
@@ -54,36 +51,33 @@ Page.prototype.cloneUniforms = function(uniforms){
 
 Page.prototype.fillUniforms = function( uniformType ){
 
+  //console.log( pages );
+
   if( pages.length != 0){
     
     var beforePage = pages[ pages.length - 1 ];
-    console.log( beforePage);
+    //console.log( beforePage);
 
-    var u = {};
+   // var u = {};
 
     for( var propt in beforePage[uniformType] ){
 
-      
-
-
       if( this[uniformType][propt] != null ){
-        if( this.title =="MORE" && propt == "curlNoiseSize" ){ console.log("YAYATNSKNDAFNASDKFASDN");}
-        u[propt] = this[uniformType][propt]
+        //u[propt] = this[uniformType][propt]
       }else{
-        console.log("b4");
-        console.log( beforePage[uniformType][propt] );
-        console.log( propt );
-        u[propt] = beforePage[uniformType][propt];
+        this[uniformType][propt] = beforePage[uniformType][propt];
       }
 
 
     }
 
-    return u;
+   // return u;
 
   }else{
 
-    var u = {};
+    //console.log( "heeos")
+
+    //var u = {};
 
     var defaults;
     if( uniformType == "targetSimulationUniforms"){
@@ -97,25 +91,30 @@ Page.prototype.fillUniforms = function( uniformType ){
     for( var propt in defaults ){
 
 
+      if( defaults[propt].type == "f" ){
 
-      if( this[uniformType][propt] != null ){
-        console.log("YUP");
-        console.log( this[uniformType][propt] );
-        console.log( propt );
-        u[propt] = this[uniformType][propt]
-      }else{
-        if( propt != "time" && propt != "dT" && defaults[propt].type == "f" ){
-          u[propt] = defaults[propt].value;
-          console.log("nARP");
-          console.log( defaults[propt] );
+        if( this[uniformType][propt] != null ){
+          console.log("alreadymade")
+          console.log( uniformType );
           console.log( propt );
+         
+         // u[propt] = this[uniformType][propt]
+        }else{
+          if( propt !== "time" && propt !== "dT"){
+
+            console.log("get from defaults made")
+            console.log( uniformType );
+            console.log( propt );
+            this[uniformType][propt] = defaults[propt].value;
+          }
         }
+
       }
 
 
     }
 
-    return u;
+    //return u;
 
   }
 
@@ -213,6 +212,7 @@ Page.prototype.start = function(){
   }.bind( this ) );
 
   tween.start();
+  devalueNavbar();
 
 
 
@@ -234,6 +234,14 @@ Page.prototype.onComplete = function(){
   title.style.color = color;
 
   }
+
+  var file = "audio/words/SPACEpuppy "+(this.id)+"-Audio.mp3";
+  if( this.id != 0 ){
+    stream.setStreamSource( file );
+    stream.play();
+  }
+
+  valueNavbar();
 
 
 }

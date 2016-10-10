@@ -2,7 +2,7 @@ function beginLoad(){
   loadShaders();
   loadImages();
   //loadModels();
-  //loadAudio();
+  loadAudio();
 }
 
 function loadShaders(){
@@ -115,13 +115,12 @@ function loadModels(){
 
 function loadAudio(){
 
-  loadBuffer( "loveLoopBuffer"  , "audio/love.mp3"      );
-  loadBuffer( "painLoopBuffer"  , "audio/pain.mp3"      );
-  loadBuffer( "normLoopBuffer"  , "audio/norm.mp3"      );
+  //loadBuffer( "loveLoopBuffer"  , "audio/love.mp3"      );
+
 
   loadBuffer( "clickNoteBuffer" , "audio/switch.mp3"    );
-  loadBuffer( "startNoteBuffer" , "audio/startNote.mp3" );
-  loadBuffer( "jestNoteBuffer"  , "audio/jest.mp3" );
+  loadBuffer( "wrongNoteBuffer" , "audio/sounds/tangSound.mp3"    );
+
 
 
 
@@ -149,7 +148,10 @@ function onLoad(){
 
     finishedLoading();
 
+
   }
+
+  loadDiv.style.width = (( G.loading.loaded / G.loading.neededToLoad ) * window.innerWidth) + "px" 
 
 }
 
@@ -164,5 +166,4 @@ function onError(e){
 
 function finishedLoading(){
   init(); 
-  animate();
 }
